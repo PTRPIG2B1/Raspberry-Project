@@ -3,12 +3,19 @@
 import ConfigParser
 import sys
 
+str = sys.argv[1]
+temp = str.split('&')
+temp = [i.split('=') for i in temp]
+args = []
+for i in temp:
+	args += i
+print args
+args = ['padding']+args
 
-args = sys.argv
 
 if len(args) > 1:
 	cfg = ConfigParser.ConfigParser()
-	cfg.read('config.cfg')
+	cfg.read('/home/pi/RaspiWatch/bin/config.cfg')
 	action = args[1]
 	if len(args) == 2:
 		if action == "off":
