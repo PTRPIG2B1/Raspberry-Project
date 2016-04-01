@@ -1,7 +1,8 @@
-#! /usr/bin
+#!/usr/bin/python2
 
 import ConfigParser
 import sys
+
 
 args = sys.argv
 

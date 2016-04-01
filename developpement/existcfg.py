@@ -1,3 +1,4 @@
+#!/usr/bin/python2
 import os
 if not os.path.isfile('config.cfg'):
   print 'Creation'

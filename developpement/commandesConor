@@ -1,3 +1,5 @@
 ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 /etc/apache2/sites-enabled
 /etc/init.d/apache2 restart
+
+#!/usr/bin/python2
