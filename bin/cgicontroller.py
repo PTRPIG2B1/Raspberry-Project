@@ -1,76 +1,71 @@
 #!/usr/bin/python2
+# -*- coding: utf-8 -*-
 
 import ConfigParser
 import sys
 
-import os 
-print "uid = " + str(os.getuid())+ ", gid = " + str(os.getgid())
+#Le chemin vers la config doit etre absolu
+#REMTTRE configPath='/home/pi/RaspiWatch/bin/config.cfg'
+configPath='config.cfg'
+nomSection='Section1'
 
-import os
-os.system('touch sdsdsd')
-
-configPath='/home/pi/RaspiWatch/bin/config.cfg'
-
+#Parse d'arguments dans un tableau args
 str = sys.argv[1]
 temp = str.split('&')
 temp = [i.split('=') for i in temp]
 args = []
 for i in temp:
 	args += i
-print args
-args = ['padding']+args
+	
+#ligne suivante inutile donc enlevée, il y aura toujours "submit=submit", et si ce n'est pas le cas
+# il y aurait une erreur à str = sys.argv[1] de toute façon
+#if len(args) > 0:
+cfg = ConfigParser.ConfigParser()
+cfg.read(configPath)
+action = args[0]
 
-
-if len(args) > 1:
-	cfg = ConfigParser.ConfigParser()
-	cfg.read(configPath)
-	action = args[1]
-	if len(args) == 2:
-		if action == "off":
-			print "kill du programme de detection"
-			cfg.set('Section1', 'detectenmarche', False)
-			cfg.write(open(configPath,'w'))
-		elif action == "on":
-			print "lancement du programme de detection"
-			cfg.set('Section1', 'detectenmarche', True)
-			cfg.write(open(configPath,'w'))
-		elif action == "photo":
-			print "prise de la bastille(1780)"
-			
-	elif len(args)%2 == 1:
+if action == "off":
+	print "kill du programme de detection"
+	cfg.set('Section1', 'detectenmarche', False)
+	cfg.write(open(configPath,'w'))
+elif action == "on":
+	print "lancement du programme de detection"
+	cfg.set('Section1', 'detectenmarche', True)
+	cfg.write(open(configPath,'w'))
+elif action == "photo":
+	print "prise de la bastille(1780)"
 		
-		i = 1
-		
-		while i < len(args):
+# "elif len(args)%2 == 0:" inutile, len(args)%2 est toujours divible par 2 en GET
+else:
+	#i = 1
+	#while i < len(args):
 	
-			
-			action2 = args[i]
-			if action2 == "res":
-			
-				if args[i+1]== '1':
-					cfg.set('Section1', 'width', '1900')
-					cfg.set('Section1', 'height', '1080')
-				elif args[i+1]== '2':
-					cfg.set('Section1', 'width', '1280')
-					cfg.set('Section1', 'height', '720')
-				elif args[i+1] == '3':
-					cfg.set('Section1', 'width', '640')
-					cfg.set('Section1', 'height', '480')
-				else:
-					cfg.set('Section1', 'width', '1900')
-					cfg.set('Section1', 'height', '1080')
-					
-					
-			elif action2 == "ips":
-				cfg.set('Section1', 'fps', args[i+1])
-				
-			elif action2 == "seuil":
-				cfg.set('Section1', 'seuil', args[i+1])
-				
-			elif action2 == "luminosite":
-				cfg.set('Section1', 'luminosite', args[i+1])
+	#plus propre avec for de pas de 2
+	for i in range(0,len(args)-1,2):
 
-			i = i + 2
-		cfg.write(open(configPath,'w'))
-	
-	
+		action = args[i]
+		if action == "res":
+		
+			if args[i+1]== '1':
+				cfg.set(nomSection, 'width', '1900')
+				cfg.set(nomSection, 'height', '1080')
+			elif args[i+1]== '2':
+				cfg.set(nomSection, 'width', '1280')
+				cfg.set(nomSection, 'height', '720')
+			elif args[i+1] == '3':
+				cfg.set(nomSection, 'width', '640')
+				cfg.set(nomSection, 'height', '480')
+			else:
+				cfg.set(nomSection, 'width', '1900')
+				cfg.set(nomSection, 'height', '1080')
+				
+		elif action == "ips":
+			cfg.set(nomSection, 'fps', args[i+1])
+			
+		elif action == "seuil":
+			cfg.set(nomSection, 'seuil', args[i+1])
+			
+		elif action == "lum":
+			cfg.set(nomSection, 'luminosite', args[i+1])
+			
+	cfg.write(open(configPath,'w'))
