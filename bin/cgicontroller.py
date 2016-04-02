@@ -3,6 +3,12 @@
 import ConfigParser
 import sys
 
+import os 
+print "uid = " + str(os.getuid())+ ", gid = " + str(os.getgid())
+
+import os
+os.system('touch sdsdsd')
+
 str = sys.argv[1]
 temp = str.split('&')
 temp = [i.split('=') for i in temp]
