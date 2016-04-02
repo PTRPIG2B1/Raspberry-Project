@@ -5,8 +5,7 @@ import ConfigParser
 import sys
 
 #Le chemin vers la config doit etre absolu
-#REMTTRE configPath='/home/pi/RaspiWatch/bin/config.cfg'
-configPath='config.cfg'
+configPath='/home/pi/RaspiWatch/bin/config.cfg'
 nomSection='Section1'
 
 #Parse d'arguments dans un tableau args
