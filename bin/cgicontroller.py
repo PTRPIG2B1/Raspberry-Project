@@ -9,6 +9,8 @@ print "uid = " + str(os.getuid())+ ", gid = " + str(os.getgid())
 import os
 os.system('touch sdsdsd')
 
+configPath='/home/pi/RaspiWatch/bin/config.cfg'
+
 str = sys.argv[1]
 temp = str.split('&')
 temp = [i.split('=') for i in temp]
@@ -21,17 +23,17 @@ args = ['padding']+args
 
 if len(args) > 1:
 	cfg = ConfigParser.ConfigParser()
-	cfg.read('/home/pi/RaspiWatch/bin/config.cfg')
+	cfg.read(configPath)
 	action = args[1]
 	if len(args) == 2:
 		if action == "off":
 			print "kill du programme de detection"
 			cfg.set('Section1', 'detectenmarche', False)
-			cfg.write(open('config.cfg','w'))
+			cfg.write(open(configPath,'w'))
 		elif action == "on":
 			print "lancement du programme de detection"
 			cfg.set('Section1', 'detectenmarche', True)
-			cfg.write(open('config.cfg','w'))
+			cfg.write(open(configPath,'w'))
 		elif action == "photo":
 			print "prise de la bastille(1780)"
 			
@@ -69,6 +71,6 @@ if len(args) > 1:
 				cfg.set('Section1', 'luminosite', args[i+1])
 
 			i = i + 2
-		cfg.write(open('config.cfg','w'))
+		cfg.write(open(configPath,'w'))
 	
 	
