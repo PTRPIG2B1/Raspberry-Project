@@ -3,3 +3,11 @@ ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 /etc/init.d/apache2 restart
 
 #!/usr/bin/python2
+
+.
+├── [drwxr-xr-x www-data]  html
+│   └── [-rw-r--r-- www-data]  index.php
+└── [drwxrwx--x www-data]  test
+    ├── [-rwxrwx--- www-data]  cgicontroller.py
+    └── [-rwxrwx--- www-data]  config.cfg
+
