@@ -11,3 +11,11 @@ ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
     ├── [-rwxrwx--- www-data]  cgicontroller.py
     └── [-rwxrwx--- www-data]  config.cfg
 
+
+echo "Content-type: text/html"
+echo ""
+echo "<html><head><title>Close browser</title>"
+echo "<script type='text/javascript'>"
+echo "window.open('', '_self', ''); window.close();"
+echo "</script></head><body>"
+echo "</body></html"
