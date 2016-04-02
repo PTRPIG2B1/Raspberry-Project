@@ -55,9 +55,10 @@
 		<h2>Photos</h2>
 		<section>
 		    <?php
-
+			
+			$path="/home/pi/RaspiWatch/photo";
 		    // open this directory 
-		    $myDirectory = opendir("/home/pi/RaspiWatch/photo");
+		    $myDirectory = opendir($path);
 
 		    // get each entry
 		    while($entryName = readdir($myDirectory)) {
@@ -79,7 +80,7 @@
 			    for($index=0; $index < $indexCount; $index++) {
 				    $extension = substr($dirArray[$index], -3);
 				    if ($extension == 'jpg'){ // list only jpgs
-					    echo '<li><img src="images/' . $dirArray[$index] . '" alt="Image" /><span>' . $dirArray[$index] . '</span>';
+					    echo '<li><img src="'.$path .'/'. $dirArray[$index] .'" alt="'.$dirArray[$index].'" /><span>' . $dirArray[$index] . '</span>';
 				    }	
 			    }
 			    ?>
