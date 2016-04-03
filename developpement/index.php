@@ -54,43 +54,69 @@
 		
 		<h2>Photos</h2>
 		<section>
-
-		<!-- Ce script php ouvre le dossier /home/pi/RaspiWatch/photo et lit le nom des fichiers, puis ajoute du HTML tel qu'on a 
-			[ip]/photo/[nomphot].jpg 
-		Cela marche parcequ'un Alias est crée dans la conf de apache tel que /photo pointe vers   /home/pi/RaspiWatch/photo, qui
-		n'est pas accessible par html sinon. -->
-		    <?php
-			
-			$path="/home/pi/RaspiWatch/photo";
-		    // open this directory 
-		    $myDirectory = opendir($path);
-
-		    // get each entry
-		    while($entryName = readdir($myDirectory)) {
-			    $dirArray[] = $entryName;
-		    }
-
-		    // close directory
-		    closedir($myDirectory);
-
-		    //	count elements in array
-		    $indexCount	= count($dirArray);
-
-		    ?>
 		
-		    <ul>
+		
+		<?php
+		//Ce premier script met en place des tableaux avec les noms de fichiers
+		
+			$photoPath="/home/pi/RaspiWatch/photo";
+			$videoPath="/home/pi/RaspiWatch/video";
+			
+			$photoDirectory = opendir($photoPath);
+			$videoDirectory = opendir($videoPath);
 
-			    <?php
-			    // loop through the array of files and print them all in a list
-			    for($index=0; $index < $indexCount; $index++) {
-				    $extension = substr($dirArray[$index], -3);
-				    if ($extension == 'jpg'){ // list only jpgs
-					    echo '<li><img src="photo/'. $dirArray[$index] .'" alt="'.$dirArray[$index].'" /><span>' . $dirArray[$index] . '</span>';
-				    }	
-			    }
-			    ?>
+			while($filename = readdir($photoDirectory)) {
+				$photoArray[] = $filename;
+		    	}
+		    	
+		    	while($filename = readdir($videoDirectory)) {
+				$videoArray[] = $filename;
+		    	}
 
-		    </ul>	
+		    	
+		    	var_dump($photoArray);
+		    	var_dump($videoArray);
+		    	
+			closedir($photoDirectory);
+			closedir($videoDirectory);
+			
+			$nbPhoto = count($photoArray);
+			$nbVideo = count($videoArray);
+		?>
+		
+		<ul id="photos">
+
+			<?php
+			//Ce deuxième script affiche tous les photos dans le tableau photoArray et les affiches, s'ils sont sous format .jpg
+			
+				for($index=0; $index < $nbPhoto; $index++) {
+					$extension = substr($photoArray[$index], -3);
+						if ($extension == 'jpg'){
+							echo '<li><img src="photo/'. $photoArray[$index] .'" alt="'.$photoArray[$index].'" /><span>' . $photoArray[$index] . '</span></li>';
+						}
+			    	}
+			?>
+
+		</ul>	
+		</section>
+
+		<h2>Vidéos</h2>
+		<section>
+		
+		<ul id="videos">
+			<?php
+			//Ce troisème script crée des liens pour télécharger les vidéos, et, si elle exite, affiche la photo correspondante comme miniature
+			
+				for($index=0; $index < $nbVideo; $index++) {
+					$extension = substr($videoArray[$index], -4);
+						if ($extension == 'h264'){
+							$miniName= substr($videoArray[$index],0, strlen($videoArray[$index])-4).'jpg';
+							echo '<li><a href="video/'.$videoArray[$index].'"><img src="video/miniatures/'. $miniName .'" alt="'.$miniName.'" /><span>' . $videoArray[$index] . '</span></a></li>';
+						}
+			    	}
+			?>
+
+		</ul>
 		</section>
 		
 		<footer>
