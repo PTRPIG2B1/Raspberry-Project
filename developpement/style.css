@@ -1,0 +1,23 @@
+#photos li{
+	list-style-type:none;
+	width:25%;
+	display: inline-block;
+	margin-right: 30px;
+}
+
+#photos img{
+	width : 100%;
+}
+
+#videos li{
+	list-style-type:none;
+	width:25%;
+	display: inline-block;
+	margin-right: 30px;
+}
+
+#videos img{
+	width : 100%;
+}
+
+

@@ -3,6 +3,7 @@
 	<head>
 		<meta charset = "UTF-8">
 		<title>Menu RaspiWatch</title>
+		<link rel="stylesheet" type="test/css" href="style.css">
 	</head>
 
 	<body>
@@ -74,9 +75,6 @@
 		    	}
 
 		    	
-		    	var_dump($photoArray);
-		    	var_dump($videoArray);
-		    	
 			closedir($photoDirectory);
 			closedir($videoDirectory);
 			
@@ -92,7 +90,7 @@
 				for($index=0; $index < $nbPhoto; $index++) {
 					$extension = substr($photoArray[$index], -3);
 						if ($extension == 'jpg'){
-							echo '<li><img src="photo/'. $photoArray[$index] .'" alt="'.$photoArray[$index].'" /><span>' . $photoArray[$index] . '</span></li>';
+							echo '<li><a href="photo/'. $photoArray[$index].'"><img src="photo/'. $photoArray[$index] .'" alt="'.$photoArray[$index].'" /><span>' . $photoArray[$index] . '</span></a></li>';
 						}
 			    	}
 			?>
@@ -120,7 +118,7 @@
 		</section>
 		
 		<footer>
-		Footer ici
+		Site en construction.
 		</footer>
 
 	</body>
