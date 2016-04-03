@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset = "utf-8"/>
+		<meta charset = "UTF-8">
 		<title>Menu RaspiWatch</title>
 	</head>
 
@@ -13,7 +13,7 @@
 		<h2>Menu Principal</h2>
 		<section>
 			<form id="menu" action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
-				<legend> Que souhaitez-vous faire ? </legend>
+				<legend>Que souhaitez-vous faire ?</legend>
 				<fieldset>
 				<input type = "submit" name = "on" value = "Démarrer">
 				<input type = "submit" name = "off" value = "Arrêter">
