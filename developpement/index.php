@@ -54,6 +54,11 @@
 		
 		<h2>Photos</h2>
 		<section>
+
+		<!-- Ce script php ouvre le dossier /home/pi/RaspiWatch/photo et lit le nom des fichiers, puis ajoute du HTML tel qu'on a 
+			[ip]/photo/[nomphot].jpg 
+		Cela marche parcequ'un Alias est crée dans la conf de apache tel que /photo pointe vers   /home/pi/RaspiWatch/photo, qui
+		n'est pas accessible par html sinon. -->
 		    <?php
 			
 			$path="/home/pi/RaspiWatch/photo";
@@ -80,7 +85,7 @@
 			    for($index=0; $index < $indexCount; $index++) {
 				    $extension = substr($dirArray[$index], -3);
 				    if ($extension == 'jpg'){ // list only jpgs
-					    echo '<li><img src="'.$path .'/'. $dirArray[$index] .'" alt="'.$dirArray[$index].'" /><span>' . $dirArray[$index] . '</span>';
+					    echo '<li><img src="photo/'. $dirArray[$index] .'" alt="'.$dirArray[$index].'" /><span>' . $dirArray[$index] . '</span>';
 				    }	
 			    }
 			    ?>
