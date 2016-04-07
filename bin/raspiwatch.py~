@@ -246,7 +246,7 @@ while (choix != '0') :
 			print 'Prise de la miniature ...'
 			os.system("raspistill -t 100 -o /home/pi/RaspiWatch/video/miniatures/"+nomVideo+".jpg")
 			cmd = "raspivid -o "+nomVideo+".h264 -t " + str(tps)
-			os.system("raspivid -o /home/pi/RaspiWatch/video/"+nomVideo+".h264 -t "+str(tps))
+			os.system("raspivid -o "+nomVideo+".h264 -t "+str(tps))
 		elif (choix == '3'):
 			print 'Demarrage de la detection ...'
 			detectEnMarche = True
