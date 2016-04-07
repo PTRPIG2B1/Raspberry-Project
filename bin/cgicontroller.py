@@ -3,6 +3,7 @@
 
 import ConfigParser
 import sys
+import os
 
 #Le chemin vers la config doit etre absolu
 configPath='/home/pi/RaspiWatch/bin/config.cfg'
@@ -24,16 +25,19 @@ cfg.read(configPath)
 action = args[0]
 
 if action == "off":
-	print "kill du programme de detection"
-	cfg.set('Section1', 'detectenmarche', False)
+	#print "kill du programme de detection"
+	cfg.set(nomSection, 'detectenmarche', 'False')
 	cfg.write(open(configPath,'w'))
+	#cfg.write(open(configPath,'w'))
 elif action == "on":
-	print "lancement du programme de detection"
-	cfg.set('Section1', 'detectenmarche', True)
+	#print "lancement du programme de detection"
+	cfg.set(nomSection, 'detectenmarche', 'True')
 	cfg.write(open(configPath,'w'))
+	os.system('python /home/pi/RaspiWatch/bin/detec.py &')
 elif action == "photo":
-	print "prise de la bastille(1780)"
-		
+	#print "prise de la bastille(1780)"
+	os.system('raspistill -o test.jpg')
+	os.system('rm test.jpg')	
 # "elif len(args)%2 == 0:" inutile, len(args)%2 est toujours divible par 2 en GET
 else:
 	#i = 1

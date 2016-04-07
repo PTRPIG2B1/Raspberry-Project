@@ -34,7 +34,7 @@ body{
 
 
 
-#contenuOnglet1, #contenuOnglet2{
+#onglet1, #onglet2{
 	display: none;
 }
 

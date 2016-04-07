@@ -16,7 +16,7 @@
 		<nav>
 			<div id = "menu">
 				<ul id = "onglets">
-					<li id = "onglet0" class = "active" onclick ="changeOnglet(0)"> Configuration </li>
+					<li id = "onglet0" class = "active" onclick ="changeOnglet(0)"> Menu principal </li>
 					<li id = "onglet1" onclick ="changeOnglet(1)"> Photos </li>
 					<li id = "onglet2" onclick ="changeOnglet(2)"> Vidéos </li>
 				</ul>
@@ -69,7 +69,6 @@
 		<section id = "contenuOnglet1">
 			<h2>Photos</h2>
 		
-		
 		<?php
 		//Ce premier script met en place des tableaux avec les noms de fichiers
 		
@@ -96,29 +95,43 @@
 		?>
 		
 		<ul id="photos">
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss" /><span>imgPourDevCss.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss2" /><span>imgPourDevCss2.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss3" /><span>imgPourDevCss3.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss4" /><span>imgPourDevCss4.jpg</span></a></li>
+
+			<?php
+			//Ce deuxième script affiche tous les photos dans le tableau photoArray et les affiches, s'ils sont sous format .jpg
+			
+				for($index=0; $index < $nbPhoto; $index++) {
+					$extension = substr($photoArray[$index], -3);
+						if ($extension == 'jpg'){
+							echo '<li><a href="photo/'. $photoArray[$index].'"><img src="photo/'. $photoArray[$index] .'" alt="'.$photoArray[$index].'" /><span>' . $photoArray[$index] . '</span></a></li>';
+						}
+			    	}
+			?>
+
 		</ul>	
 		</section>
 
 		<section id = "contenuOnglet2">
-			<h2>Vidéos</h2>
-		
+			<h2>Vidéos</h2>	
+
 		<ul id="videos">
-			<li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss" /><span>imgPourDevCss.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss2" /><span>imgPourDevCss2.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss3" /><span>imgPourDevCss3.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss4" /><span>imgPourDevCss4.jpg</span></a></li>
-            <li><a href="imgPourDevCss.jpg"><img src="imgPourDevCss.jpg" alt="imgPourDevCss5" /><span>imgPourDevCss5.jpg</span></a></li>
+			<?php
+			//Ce troisème script crée des liens pour télécharger les vidéos, et, si elle exite, affiche la photo correspondante comme miniature
+			
+				for($index=0; $index < $nbVideo; $index++) {
+					$extension = substr($videoArray[$index], -4);
+						if ($extension == 'h264'){
+							$miniName= substr($videoArray[$index],0, strlen($videoArray[$index])-4).'jpg';
+							echo '<li><a href="video/'.$videoArray[$index].'"><img src="video/miniatures/'. $miniName .'" alt="'.$miniName.'" /><span>' . $videoArray[$index] . '</span></a></li>';
+						}
+			    	}
+			?>
+
 		</ul>
 		</section>
 		
 		<footer>
 		Site en construction.
 		</footer>
-
 
 
 		<script type="text/javascript">

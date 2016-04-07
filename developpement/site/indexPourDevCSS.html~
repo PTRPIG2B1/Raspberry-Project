@@ -15,8 +15,9 @@
 
 		<nav>
 			<div id = "menu">
+				<h2>Menu Principal</h2>
 				<ul id = "onglets">
-					<li id = "onglet0" class = "active" onclick ="changeOnglet(0)"> Configuration </li>
+					<li id = "onglet0" class = "active" onclick ="changeOnglet(0)"> Menu principal </li>
 					<li id = "onglet1" onclick ="changeOnglet(1)"> Photos </li>
 					<li id = "onglet2" onclick ="changeOnglet(2)"> Vidéos </li>
 				</ul>

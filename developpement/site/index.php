@@ -2,29 +2,42 @@
 <html>
 	<head>
 		<meta charset = "UTF-8">
-		<title>Menu RaspiWatch</title>
+		<title>RaspiWatch</title>
 		<link rel="stylesheet" type="test/css" href="style.css">
 	</head>
 
 	<body>
 		<header>
-			<h1>Menu RaspiWatch</h1>
+			<img id = "logo" src = "../logo/RaspiWATCH-Logo-V2.png" alt="logo raspiWATCH">
+			<h1>RaspiWATCH</h1>
 		</header>
 
-		<h2>Menu Principal</h2>
-		<section>
-			<form id="menu" action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
-				<legend>Que souhaitez-vous faire ?</legend>
-				<fieldset>
-				<input type = "submit" name = "on" value = "Démarrer">
-				<input type = "submit" name = "off" value = "Arrêter">
-				<input type = "submit" name = "photo" value = "Photo">
-				</fieldset>
-			</form>
-		</section>
+
+		<nav>
+			<div id = "menu">
+				<ul id = "onglets">
+					<li id = "onglet0" class = "active" onclick ="changeOnglet(0)"> Configuration </li>
+					<li id = "onglet1" onclick ="changeOnglet(1)"> Photos </li>
+					<li id = "onglet2" onclick ="changeOnglet(2)"> Vidéos </li>
+				</ul>
+			</div>
+		</nav>
+
+			<section>
+				<form action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
+					<legend>Que souhaitez-vous faire ?</legend>
+					<fieldset>
+					<input type = "submit" name = "on" value = "Démarrer">
+					<input type = "submit" name = "off" value = "Arrêter">
+					<input type = "submit" name = "photo" value = "Photo">
+					<input type = "submit" name = "video" value = "Vidéo">
+					</fieldset>
+				</form>
+			</section>
+
 		
-		<h2> Configuration </h2>
-		<section>
+		<section id = "contenuOnglet0">
+			<h2> Configuration </h2>
 			<form id="config" action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
 				<fieldset>
 					<legend>Résolution</legend>
@@ -48,14 +61,13 @@
 					<input type="range"  id = "lum" name = "lum" min="0" max="100" value="50" step = "5" oninput="document.getElementById('AfficheRange2').textContent=value" />
 					<span id="AfficheRange2">50</span>%
 					
-					<input type = "submit" name = "submit" value = "submit">
+					<input type = "submit" name = "submit" value = "Valider">
 				</fieldset>
 			</form>
 		</section>
 		
-		<h2>Photos</h2>
-		<section>
-		
+		<section id = "contenuOnglet1">
+			<h2>Photos</h2>
 		
 		<?php
 		//Ce premier script met en place des tableaux avec les noms de fichiers
@@ -98,9 +110,9 @@
 		</ul>	
 		</section>
 
-		<h2>Vidéos</h2>
-		<section>
-		
+		<section id = "contenuOnglet2">
+			<h2>Vidéos</h2>	
+
 		<ul id="videos">
 			<?php
 			//Ce troisème script crée des liens pour télécharger les vidéos, et, si elle exite, affiche la photo correspondante comme miniature
@@ -121,5 +133,21 @@
 		Site en construction.
 		</footer>
 
+
+		<script type="text/javascript">
+		      var nombreOnglets = 3;
+		      function changeOnglet(numero)
+		      {
+			// On commence par tout masquer
+			for (var i = 0; i < nombreOnglets; i++){
+				document.getElementById("contenuOnglet" + i).style.display = "none";
+				document.getElementById("onglet" + i).className = '';
+			
+			}
+			// Puis on affiche celui qui a été sélectionné
+			document.getElementById("contenuOnglet" + numero).style.display = "block";
+			document.getElementById("onglet" + numero).className = 'active';
+		      }
+		</script>
 	</body>
 </html>
