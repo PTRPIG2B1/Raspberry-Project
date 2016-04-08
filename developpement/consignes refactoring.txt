@@ -1,0 +1,16 @@
+Consignes général :
+1) COMMENTER COMMENTER COMMENTER
+2) Faire des chemins absolus (/home/pi/RaspiWatch/[...])
+3) Faire des constantes pour le plus possible (en majuscules, espaces avec underscores ( _ ) en haut des fichiers
+
+Etapes :
+1) Changer config : 3 sections, General(luminosite), Detection(enmarche, seuil), Video(largeur, hauteur, ips), photo(largeur, hauteur)
+  - SEULEMENT MINUSCULES
+2) Mettre à jour les variables de nom de config de make config
+3) Mettre à jour les variables de nom de config de cgicontroller, et le site (index.php pour l'instant) pour utiliser les mêmes noms (ips partout par exemple, pas fps)
+4) Un fichier python "actions.py" qu'on va include qui contient : demarrerDetec(), arreterDetec(), prendrePhoto(), prendreVideo(int temps), setResVideo(int valeur [1,2 ou 3]), setResPhoto(int valeur [1,2 ou 3]), setIps(int valeur), setLuminosite(int pourcentage), setSeuil(int pourcentage)
+5) Alleger le code menu et cgicontroller qui feront appel aux fonctions de "actions.py"
+7) Reecrire "detec.py", séparer en fonctions placés en haut dans le code (dans le même fichier)
+8) Supprimer tous les fichiers inutiles/inutilisés
+9) Separer HTML et PHP (à voir, je sais pas trop trop comment faire)
+10) Ecrire un alias pour supprimer tous les vidéos et photos dans le dossier raspiwatch pour nettoyer facilement
