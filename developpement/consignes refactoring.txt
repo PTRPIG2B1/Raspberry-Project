@@ -14,3 +14,5 @@ Etapes :
 8) Supprimer tous les fichiers inutiles/inutilisés
 9) Separer HTML et PHP (à voir, je sais pas trop trop comment faire)
 10) Ecrire un alias pour supprimer tous les vidéos et photos dans le dossier raspiwatch pour nettoyer facilement
+
+11) Ajouter systèmes de log (après refactoring, sinon on va refactorer le système de log pour rien aussi)
