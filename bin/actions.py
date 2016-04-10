@@ -85,21 +85,16 @@ def setResPhoto(choix):
 	cfg.write(open(CONFIG_PATH,'w'))
 
 
-def setIps(choix):
-    """ Change la cadence de vidéo dans la configuration, en fonction des 4 choix disponibles. En cas de mauvaise saisie,
-        la cadence la plus petite est utilisée """
-    if (choix == '1'):
-		ips = 30
-	elif (choix == '2'):
-		ips = 25
-	elif (choix == '3'):
-		ips = 20
-	else:
-		ips = 15
-	cfg.set('Video', 'ips', ips)
+def setIps(valeur):
+    """ Change la cadence de vidéo dans la configuration. """
+    if valeur < 10:
+        valeur = 10
+    if valeur > 30
+        valeur = 30
+	cfg.set('Video', 'ips', valeur)
 	cfg.write(open(CONFIG_PATH,'w'))
 
-def setLuminosite(int pourcentage):
+def setLuminosite(pourcentage):
     """ Change la luminosité de détection, de photo et de vidéo en prenant en paramètre le pourcentage voulu. Cette procédure
         contrôle la saisie """
     if pourcentage < 0:
@@ -109,7 +104,7 @@ def setLuminosite(int pourcentage):
     cfg.set('General', 'luminosite', pourcentage)
     cfg.write(open(CONFIG_PATH,'w'))
 
-def setSeuil(int pourcentage):
+def setSeuil(pourcentage):
     """ Change le seuil de détection en prenant en paramètre le pourcentage voulu. Cette procédure
         contrôle la saisie """
     if pourcentage < 0:

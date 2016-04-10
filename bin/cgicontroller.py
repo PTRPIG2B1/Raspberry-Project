@@ -4,10 +4,10 @@
 import ConfigParser
 import sys
 import os
+import actions
 
 #Le chemin vers la config doit etre absolu
-configPath='/home/pi/RaspiWatch/bin/config.cfg'
-nomSection='Section1'
+CONFIG_PATH='/home/pi/RaspiWatch/bin/config.cfg'
 
 #Parse d'arguments dans un tableau args
 str = sys.argv[1]
@@ -17,58 +17,28 @@ args = []
 for i in temp:
 	args += i
 	
-#ligne suivante inutile donc enlevée, il y aura toujours "submit=submit", et si ce n'est pas le cas
-# il y aurait une erreur à str = sys.argv[1] de toute façon
-#if len(args) > 0:
-cfg = ConfigParser.ConfigParser()
-cfg.read(configPath)
+
 action = args[0]
 
 if action == "off":
-	#print "kill du programme de detection"
-	cfg.set(nomSection, 'detectenmarche', 'False')
-	cfg.write(open(configPath,'w'))
-	#cfg.write(open(configPath,'w'))
+	actions.arreterDetec()
 elif action == "on":
-	#print "lancement du programme de detection"
-	cfg.set(nomSection, 'detectenmarche', 'True')
-	cfg.write(open(configPath,'w'))
-	os.system('python /home/pi/RaspiWatch/bin/detec.py &')
+	actions.demarrerDetec()
 elif action == "photo":
-	#print "prise de la bastille(1780)"
-	os.system('raspistill -o test.jpg')
-	os.system('rm test.jpg')	
-# "elif len(args)%2 == 0:" inutile, len(args)%2 est toujours divible par 2 en GET
+	actions.prendrePhoto()
 else:
-	#i = 1
-	#while i < len(args):
-	
-	#plus propre avec for de pas de 2
 	for i in range(0,len(args)-1,2):
 
 		action = args[i]
 		if action == "res":
-		
-			if args[i+1]== '1':
-				cfg.set(nomSection, 'width', '1900')
-				cfg.set(nomSection, 'height', '1080')
-			elif args[i+1]== '2':
-				cfg.set(nomSection, 'width', '1280')
-				cfg.set(nomSection, 'height', '720')
-			elif args[i+1] == '3':
-				cfg.set(nomSection, 'width', '640')
-				cfg.set(nomSection, 'height', '480')
-			else:
-				cfg.set(nomSection, 'width', '1900')
-				cfg.set(nomSection, 'height', '1080')
+		    actions.setResVideo(args[i+1])
+		    actions.setResPhoto(args[i+1])
 				
 		elif action == "ips":
-			cfg.set(nomSection, 'fps', args[i+1])
+		    actions.setIps(args[i+1]
 			
 		elif action == "seuil":
-			cfg.set(nomSection, 'seuil', args[i+1])
+		    actions.setSeuil(args[i+1])
 			
 		elif action == "lum":
-			cfg.set(nomSection, 'luminosite', args[i+1])
-			
-	cfg.write(open(configPath,'w'))
+			actions.setLuminosite(args[i+1])
