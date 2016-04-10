@@ -17,7 +17,7 @@ closedir($photoDirectory);
 $nbPhoto = count($photoArray);
 
 for($index=0; $index < $nbPhoto; $index++) {
-    $name = $photoArray[$index]
+    $name = $photoArray[$index];
     $extension = substr($name, -3);
     if ($extension == 'jpg'){
         echo '<li><a href="photo/'. $name.'"><img src="photo/'. $name .'" alt="'.$name.'" /><span>' . $name . '</span></a></li>';

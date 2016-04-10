@@ -17,7 +17,7 @@ closedir($videoDirectory);
 $nbVideo = count($videoArray);
 
 for($index=0; $index < $nbVideo; $index++) {
-    $vidName = $videoArray[$index]
+    $vidName = $videoArray[$index];
     $miniName= substr($vidName,0, strlen($vidName)-4).'jpg';
     $extension = substr($vidName, -4);
     if ($extension == 'h264'){
