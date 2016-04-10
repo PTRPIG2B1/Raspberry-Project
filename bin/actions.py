@@ -14,14 +14,12 @@ PHOTO_PATH = '/home/pi/RaspiWatch/photo/'
 VIDEO_PATH = '/home/pi/RaspiWatch/video/'
 MINIATURES_PATH = '/home/pi/RaspiWatch/video/miniatures/'
 
-#INITIALISATION ( ATTENTION : je ne sais pas si cela va marcher, il faudra peut-être faire une fonction pour ouvrir la config. Conor )
-def init():
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
 
 def demarrerDetec():
     """ Execute le script de détection. ATTENTION : On modifie la configuration ici, il est donc inutile de le changer dans "detec.py" """
     print 'Demarrage de la detection ...'
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'enmarche', 'True')
     cfg.write(open(CONFIG_PATH,'w'))
     os.system("python detec.py &")
@@ -29,6 +27,8 @@ def demarrerDetec():
 def arreterDetec():
     """ Arrête la détection de mouvement en changeant la valeur "en marche" dans la config """
     print 'Arret de la detection ...'
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'enmarche', 'False')
     cfg.write(open(CONFIG_PATH,'w'))
 
@@ -65,6 +65,8 @@ def setResVideo(choix):
         largeur = 640
         hauteur = 480
     init()
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Video', 'largeur', largeur)
     cfg.set('Video', 'hauteur', hauteur)
     cfg.write(open(CONFIG_PATH,'w'))
@@ -82,6 +84,8 @@ def setResPhoto(choix):
     else:
         largeur = 640
         hauteur = 480
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Photo', 'largeur', largeur)
     cfg.set('Photo', 'hauteur', hauteur)
     cfg.write(open(CONFIG_PATH,'w'))
@@ -93,6 +97,8 @@ def setIps(valeur):
         valeur = 10
     if valeur > 30:
         valeur = 30
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Video', 'ips', valeur)
     cfg.write(open(CONFIG_PATH,'w'))
 
@@ -103,6 +109,8 @@ def setLuminosite(pourcentage):
         pourcentage = 0
     if pourcentage > 100:
         pourcentage = 100
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('General', 'luminosite', pourcentage)
     cfg.write(open(CONFIG_PATH,'w'))
 
@@ -113,6 +121,8 @@ def setSeuil(pourcentage):
         pourcentage = 0
     if pourcentage > 100:
         pourcentage = 100
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'seuil', pourcentage)
     cfg.write(open(CONFIG_PATH,'w'))
 
