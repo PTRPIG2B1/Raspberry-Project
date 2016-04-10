@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import os
 import ConfigParser
 import sys
 from datetime import datetime
+
 #Fonctions et procedure
 def affmenuprincipalActif():
 	print '////////////////MENU PRINCIPAL RASPBERRY////////////////\n'
