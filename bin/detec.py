@@ -64,7 +64,7 @@ while enFonctionnement == 'True' :
         print "Mouvement"
         
     os.system('mv '+IMAGE2PATH+' '+IMAGE1PATH)
-    os.system('raspistill -w '+str(WIDTH)+' -h '+str(HEIGHT)+' -t 500 -o image2.jpg')
+    os.system('raspistill -w '+str(WIDTH)+' -h '+str(HEIGHT)+' -t 500 -o '+IMAGE2PATH)
     
     cfg.read(CONFIGPATH)
     enFonctionnement = cfg.get(SECTIONVIDEO, 'detectenmarche')
