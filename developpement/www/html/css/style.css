@@ -1,0 +1,106 @@
+body{
+    	width: 1024px;
+    	margin: auto;
+	line-height: 2.2;
+	font-family: sans-serif;
+	border: 2px solid black;
+}
+
+
+
+#photos li{
+	list-style-type:none;
+	width:25%;
+	display: inline-block;
+	margin-right: 30px;
+}
+
+#photos img{
+	width : 100%;
+}
+
+#videos li{
+	width:25%;
+	display: inline-block;
+	margin-right: 30px;
+}
+
+#videos img{
+	width : 100%;
+	
+}
+
+
+
+
+
+#contenuOnglet1, #contenuOnglet2{
+	display: none;
+}
+
+nav, section{
+	padding-left: 70px;
+	padding-right: 70px;
+}
+
+
+
+header #logo{
+	width: 250px;
+	height: 250px;
+}
+
+h1{
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+	vertical-align: top;
+	padding-top: 10%;
+	padding-left: 20%;
+	font-size: -webkit-xxx-large;
+    	color: lightcoral;
+}
+
+
+#onglets
+{
+	list-style-type : none;
+	padding-bottom : 62px; 
+	border-bottom : 1px solid #9EA0A1;
+	margin-left : 0;
+	padding-left: 0px;
+	margin-bottom: 40px;
+}
+
+
+
+#onglets li
+{
+	float : left;
+	height : 40px; 
+    	background-color: #F4F9FD;
+    	margin : 1px 10px 0 2px;  
+    	border : 1px solid #9EA0A1;
+	border-radius: 5px 5px 0px 0px;
+	padding : 10px;
+	padding-right: 80px;
+
+	display : block;
+    	color : #666;
+    	text-decoration : none;
+}
+
+
+
+#onglets li.active
+{
+    	border-bottom: 1px solid #fff;
+    	background-color: #fff;
+}
+
+#onglets li:hover{
+	background-color: #fff;
+}
+
+
