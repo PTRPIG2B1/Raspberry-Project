@@ -64,7 +64,6 @@ def setResVideo(choix):
     else:
         largeur = 640
         hauteur = 480
-    init()
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
     cfg.set('Video', 'largeur', largeur)
