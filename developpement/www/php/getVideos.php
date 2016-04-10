@@ -1,3 +1,5 @@
+<?php
+
 /**
 * Script pour récupérer le code HTML nécéssaire à l'affichage des vidéos avec miniature
 *
@@ -7,7 +9,7 @@
 *
 */
 
-<?php
+// On append tous les noms de fichier dans un tableau
 $videoPath="/home/pi/RaspiWatch/video";
 $videoDirectory = opendir($videoPath);
 while($filename = readdir($videoDirectory)) {
@@ -16,6 +18,7 @@ while($filename = readdir($videoDirectory)) {
 closedir($videoDirectory);
 $nbVideo = count($videoArray);
 
+//Boucle principale, pour chaque fichier, si c'est une vidéo, alors on génère le code pour télécharger la vidéo (<a>) et la miniature (<img>)
 for($index=0; $index < $nbVideo; $index++) {
     $vidName = $videoArray[$index];
     $miniName= substr($vidName,0, strlen($vidName)-4).'jpg';

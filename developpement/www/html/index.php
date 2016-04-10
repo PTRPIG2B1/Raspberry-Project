@@ -3,12 +3,12 @@
 	<head>
 		<meta charset = "UTF-8">
 		<title>RaspiWatch</title>
-		<link rel="stylesheet" type="test/css" href="style.css">
+		<link rel="stylesheet" type="test/css" href="../css/style.css">
 	</head>
 
 	<body>
 		<header>
-			<img id = "logo" src = "./RaspiWATCH-Logo-V2.png" alt="logo raspiWATCH">
+			<img id = "logo" src = "../images/logoRaspiWatch.png" alt="Logo  de RaspiWatch">
 			<h1>RaspiWATCH</h1>
 		</header>
 
@@ -23,17 +23,17 @@
 			</div>
 		</nav>
 
-			<section>
-				<form action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
-					<legend>Que souhaitez-vous faire ?</legend>
-					<fieldset>
-					<input type = "submit" name = "on" value = "Démarrer">
-					<input type = "submit" name = "off" value = "Arrêter">
-					<input type = "submit" name = "photo" value = "Photo">
-					<input type = "submit" name = "video" value = "Vidéo">
-					</fieldset>
-				</form>
-			</section>
+		<section>
+			<form action="cgi-bin/raspiwatch.cgi" method="GET" target="_blank">
+				<legend>Que souhaitez-vous faire ?</legend>
+				<fieldset>
+				<input type = "submit" name = "on" value = "Démarrer">
+				<input type = "submit" name = "off" value = "Arrêter">
+				<input type = "submit" name = "photo" value = "Photo">
+				<input type = "submit" name = "video" value = "Vidéo">
+				</fieldset>
+			</form>
+		</section>
 
 		
 		<section id = "contenuOnglet0">
@@ -58,7 +58,7 @@
 					
 					
 					<legend>Luminosité</legend> 
-					<input type="range"  id = "luminoite" name = "luminosite" min="0" max="100" value="50" step = "5" oninput="document.getElementById('AfficheRange2').textContent=value" />
+					<input type="range"  id = "luminosite" name = "luminosite" min="0" max="100" value="50" step = "5" oninput="document.getElementById('AfficheRange2').textContent=value" />
 					<span id="AfficheRange2">50</span>%
 					
 					<input type = "submit" name = "submit" value = "Valider">
@@ -67,73 +67,19 @@
 		</section>
 		
 		<section id = "contenuOnglet1">
-			<h2>Photos</h2>
-		<!--
-		<?php
-		//Ce premier script met en place des tableaux avec les noms de fichiers
-		
-			$photoPath="/home/pi/RaspiWatch/photo";
-			$videoPath="/home/pi/RaspiWatch/video";
-			
-			$photoDirectory = opendir($photoPath);
-			$videoDirectory = opendir($videoPath);
-
-			while($filename = readdir($photoDirectory)) {
-				$photoArray[] = $filename;
-		    	}
-		    	
-		    	while($filename = readdir($videoDirectory)) {
-				$videoArray[] = $filename;
-		    	}
-
-		    	
-			closedir($photoDirectory);
-			closedir($videoDirectory);
-			
-			$nbPhoto = count($photoArray);
-			$nbVideo = count($videoArray);
-		?>
-		-->
-		
-		<ul id="photos">
-		    <?php include 'getPhotos.php';?>
-
-        <!--
-			<?php
-			//Ce deuxième script affiche tous les photos dans le tableau photoArray et les affiches, s'ils sont sous format .jpg
-			
-				for($index=0; $index < $nbPhoto; $index++) {
-					$extension = substr($photoArray[$index], -3);
-						if ($extension == 'jpg'){
-							echo '<li><a href="photo/'. $photoArray[$index].'"><img src="photo/'. $photoArray[$index] .'" alt="'.$photoArray[$index].'" /><span>' . $photoArray[$index] . '</span></a></li>';
-						}
-			    	}
-			?>
-			-->
-
-		</ul>	
+		    <h2>Photos</h2>
+		    <ul id="photos">
+		        <!-- Le script php suivant génère du code HTML pour tous les images qu'il faut afficher-->
+		        <?php include '../php/getPhotos.php';?>
+		    </ul>	
 		</section>
 
 		<section id = "contenuOnglet2">
 			<h2>Vidéos</h2>	
-
-		<ul id="videos">
-		    <?php include 'getVideos.php';?>
-		<!--
-			<?php
-			//Ce troisème script crée des liens pour télécharger les vidéos, et, si elle exite, affiche la photo correspondante comme miniature
-			
-				for($index=0; $index < $nbVideo; $index++) {
-					$extension = substr($videoArray[$index], -4);
-						if ($extension == 'h264'){
-							$miniName= substr($videoArray[$index],0, strlen($videoArray[$index])-4).'jpg';
-							echo '<li><a href="video/'.$videoArray[$index].'"><img src="video/miniatures/'. $miniName .'" alt="'.$miniName.'" /><span>' . $videoArray[$index] . '</span></a></li>';
-						}
-			    	}
-			?>
-		-->
-
-		</ul>
+		    <ul id="videos">
+		        <!-- Le script php suivant génère du code HTML pour tous les vidéos et miniatures qu'il faut afficher-->
+		        <?php include '../php/getVideos.php';?>
+		    </ul>
 		</section>
 		
 		<footer>

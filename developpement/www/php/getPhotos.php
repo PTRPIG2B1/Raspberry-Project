@@ -1,3 +1,5 @@
+<?php
+
 /**
 * Script pour récupérer le code HTML nécéssaire à l'affichage des photos
 *
@@ -7,7 +9,7 @@
 *
 */
 
-<?php
+// On append dans un tableau tous les fichiers/dossiers qui sont dans "photos". Le tri se fait après
 $photoPath="/home/pi/RaspiWatch/photo";
 $photoDirectory = opendir($photoPath);
 while($filename = readdir($photoDirectory)) {
@@ -16,6 +18,7 @@ while($filename = readdir($photoDirectory)) {
 closedir($photoDirectory);
 $nbPhoto = count($photoArray);
 
+//Boucle principale. Pour chaque fichier, si c'est .jpg, alors on génére le code html nécéssaire
 for($index=0; $index < $nbPhoto; $index++) {
     $name = $photoArray[$index];
     $extension = substr($name, -3);
