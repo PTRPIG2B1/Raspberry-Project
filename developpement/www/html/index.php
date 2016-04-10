@@ -68,7 +68,7 @@
 		
 		<section id = "contenuOnglet1">
 			<h2>Photos</h2>
-		
+		<!--
 		<?php
 		//Ce premier script met en place des tableaux avec les noms de fichiers
 		
@@ -93,9 +93,12 @@
 			$nbPhoto = count($photoArray);
 			$nbVideo = count($videoArray);
 		?>
+		-->
 		
 		<ul id="photos">
+		    <?php include 'getPhotos.php';?>
 
+        <!--
 			<?php
 			//Ce deuxième script affiche tous les photos dans le tableau photoArray et les affiches, s'ils sont sous format .jpg
 			
@@ -106,6 +109,7 @@
 						}
 			    	}
 			?>
+			-->
 
 		</ul>	
 		</section>
@@ -114,6 +118,8 @@
 			<h2>Vidéos</h2>	
 
 		<ul id="videos">
+		    <?php include 'getVideos.php';?>
+		<!--
 			<?php
 			//Ce troisème script crée des liens pour télécharger les vidéos, et, si elle exite, affiche la photo correspondante comme miniature
 			
@@ -125,6 +131,7 @@
 						}
 			    	}
 			?>
+		-->
 
 		</ul>
 		</section>
