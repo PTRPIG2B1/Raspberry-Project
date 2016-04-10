@@ -45,11 +45,11 @@ def prendreVideo(secondes):
         Prend aussi la miniature correspondante à la vidéo, et la place dans RaspiWatch/video/miniatures """
     tps = secondes*1000
     maintenant = datetime.now()
-    nomVideo = "video" + getDateName() + ".h264"
+    nomVideo = "video" + getDateName()
     print 'Prise de la miniature ...'
-    os.system("raspistill -t 100 -o " + MINIATURES_PATH + nomVideo)
+    os.system("raspistill -t 100 -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
-    os.system("raspivid -o " + VIDEO_PATH + nomVideo + " -t " + str(tps))
+    os.system("raspivid -o " + VIDEO_PATH + nomVideo + ".h264 -t " + str(tps))
 
 
 def setResVideo(choix):

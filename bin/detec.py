@@ -29,7 +29,7 @@ SEUIL = (int(SEUIL_CONF)/100*SEUIL_ECART + SEUIL_MIN)
 os.system('raspistill -w '+str(LARGEUR)+' -h '+str(HAUTEUR)+' -t 500 -o '+IMAGE1_PATH)
 os.system('raspistill -w '+str(LARGEUR)+' -h '+str(HAUTEUR)+' -t 500 -o '+IMAGE2_PATH)
 
-enFonctionnement = True
+enFonctionnement = 'True'
 while enFonctionnement == 'True' : 
     image1 = Image.open(IMAGE1_PATH)
     image2 = Image.open(IMAGE2_PATH)
