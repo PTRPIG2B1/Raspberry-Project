@@ -15,30 +15,30 @@ temp = str.split('&')
 temp = [i.split('=') for i in temp]
 args = []
 for i in temp:
-	args += i
-	
+    args += i
+    
 
 action = args[0]
 
 if action == "off":
-	actions.arreterDetec()
+    actions.arreterDetec()
 elif action == "on":
-	actions.demarrerDetec()
+    actions.demarrerDetec()
 elif action == "photo":
-	actions.prendrePhoto()
+    actions.prendrePhoto()
 else:
-	for i in range(0,len(args)-1,2):
+    for i in range(0,len(args)-1,2):
 
-		action = args[i]
-		if action == "res":
-		    actions.setResVideo(args[i+1])
-		    actions.setResPhoto(args[i+1])
-				
-		elif action == "ips":
-		    actions.setIps(args[i+1]
-			
-		elif action == "seuil":
-		    actions.setSeuil(args[i+1])
-			
-		elif action == "lum":
-			actions.setLuminosite(args[i+1])
+        action = args[i]
+        if action == "res":
+            actions.setResVideo(args[i+1])
+            actions.setResPhoto(args[i+1])
+                
+        elif action == "ips":
+            actions.setIps(args[i+1]
+            
+        elif action == "seuil":
+            actions.setSeuil(args[i+1])
+            
+        elif action == "lum":
+            actions.setLuminosite(args[i+1])
