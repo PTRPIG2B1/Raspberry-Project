@@ -35,7 +35,7 @@ else:
             actions.setResPhoto(args[i+1])
                 
         elif action == "ips":
-            actions.setIps(args[i+1]
+            actions.setIps(args[i+1])
             
         elif action == "seuil":
             actions.setSeuil(args[i+1])
