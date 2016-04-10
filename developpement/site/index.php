@@ -8,7 +8,7 @@
 
 	<body>
 		<header>
-			<img id = "logo" src = "../logo/RaspiWATCH-Logo-V2.png" alt="logo raspiWATCH">
+			<img id = "logo" src = "./RaspiWATCH-Logo-V2.png" alt="logo raspiWATCH">
 			<h1>RaspiWATCH</h1>
 		</header>
 
@@ -58,7 +58,7 @@
 					
 					
 					<legend>Luminosité</legend> 
-					<input type="range"  id = "lum" name = "lum" min="0" max="100" value="50" step = "5" oninput="document.getElementById('AfficheRange2').textContent=value" />
+					<input type="range"  id = "luminoite" name = "luminosite" min="0" max="100" value="50" step = "5" oninput="document.getElementById('AfficheRange2').textContent=value" />
 					<span id="AfficheRange2">50</span>%
 					
 					<input type = "submit" name = "submit" value = "Valider">

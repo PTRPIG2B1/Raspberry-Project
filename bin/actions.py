@@ -22,7 +22,7 @@ def demarrerDetec():
     cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'enmarche', 'True')
     cfg.write(open(CONFIG_PATH,'w'))
-    os.system("python detec.py &")
+    os.system("python "+BIN_PATH+"detec.py &")
     
 def arreterDetec():
     """ Arrête la détection de mouvement en changeant la valeur "en marche" dans la config """

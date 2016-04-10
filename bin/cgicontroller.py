@@ -16,7 +16,6 @@ temp = [i.split('=') for i in temp]
 args = []
 for i in temp:
     args += i
-    
 
 action = args[0]
 
@@ -35,10 +34,10 @@ else:
             actions.setResPhoto(args[i+1])
                 
         elif action == "ips":
-            actions.setIps(args[i+1])
+            actions.setIps((int)(args[i+1]))
             
         elif action == "seuil":
-            actions.setSeuil(args[i+1])
+            actions.setSeuil((int)(args[i+1]))
             
-        elif action == "lum":
-            actions.setLuminosite(args[i+1])
+        elif action == "luminosite":
+            actions.setLuminosite((int)(args[i+1]))
