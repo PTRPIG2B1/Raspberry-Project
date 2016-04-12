@@ -61,6 +61,9 @@ def setResVideo(choix):
     elif (choix == '2'):
         largeur = 1280
         hauteur = 720
+    elif (choix == '0'):
+        #On quitte
+        print 'Retour'
     else:
         largeur = 640
         hauteur = 480
@@ -80,6 +83,9 @@ def setResPhoto(choix):
     elif (choix == '2'):
         largeur = 1280
         hauteur = 720
+    elif (choix == '0'):
+        #On quitte
+        print 'Retour'
     else:
         largeur = 640
         hauteur = 480
