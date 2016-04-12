@@ -3,16 +3,18 @@ Consignes général :
 2) Faire des chemins absolus (/home/pi/RaspiWatch/[...])
 3) Faire des constantes pour le plus possible (en majuscules, espaces avec underscores ( _ ) en haut des fichiers
 
-Etapes :
-1) Changer config : 3 sections, General(luminosite), Detection(enmarche, seuil), Video(largeur, hauteur, ips), photo(largeur, hauteur)
-  - SEULEMENT MINUSCULES
-2) Mettre à jour les variables de nom de config de make config
-3) Mettre à jour les variables de nom de config de cgicontroller, et le site (index.php pour l'instant) pour utiliser les mêmes noms (ips partout par exemple, pas fps)
-4) Un fichier python "actions.py" qu'on va include qui contient : demarrerDetec(), arreterDetec(), prendrePhoto(), prendreVideo(int temps), setResVideo(int valeur [1,2 ou 3]), setResPhoto(int valeur [1,2 ou 3]), setIps(int valeur), setLuminosite(int pourcentage), setSeuil(int pourcentage)
-5) Alleger le code menu et cgicontroller qui feront appel aux fonctions de "actions.py"
-7) Reecrire "detec.py", séparer en fonctions placés en haut dans le code (dans le même fichier)
-8) Supprimer tous les fichiers inutiles/inutilisés
-9) Separer HTML et PHP (à voir, je sais pas trop trop comment faire)
-10) Ecrire un alias pour supprimer tous les vidéos et photos dans le dossier raspiwatch pour nettoyer facilement
+Etapes encore à faire :
+- Dans raspiwatchv2.py : Separer la configuration de la boucle principale. C'est à dire dans le switch principale :
+  case 5:
+    demarrerMenuConfig()
+  case 6:
+Cela permet d'alleger la boucle principale
 
-11) Ajouter systèmes de log (après refactoring, sinon on va refactorer le système de log pour rien aussi)
+- Dans actions.py : enlever tout ce qui est en rapport avec le menu (enlever les print qui ne s'appliquent que au menu, et pas à l'appli web. Exemple : "Demarrage detection..." est bon, car que ce soit par menu ou pas web, on demarre la detec. "Retour..." n'est pas bon, ça ne s'applique pas au site web).
+  (Cela revient à faire le controle du "0" dans demarrerMenuConfig()
+- La même chose peut être faite au sein de la config. CAD : case 1: demarrerMenuConfigRes(), case2 : demmare[...] (je suis pas trop sur de ça, il faudra voir ce que ça donne en séparant la config du menu principale déjà)
+- Enlever les variables detectEnMarche, pLargeur, pHauteur... qui ne sont pas utilisés d'après ce que je vois (enfin, ils le sont dans menu.py, mais pas raspiwatch, donc autant ne pas les définir dans raspiwatch)
+- Utiliser Git. Faites un "rm -rf RaspiWatch", puis "git clone https://github.com/PTRPIG2B1/RaspiWatch.git" pour tout nettoyer. Si vous n'utilisez pas git et que vous mettez les fichiers sur le Rpi, ça crée des conflits, et on perd l'interet de git (Si une goutte de café tombe sur le RPI, on perd toutes les modifs)
+  Donc faites les modifs sur vos machines, mettez les en ligne, et faites un "git pull" en SSH sur le RPI.
+
+- Ajouter systèmes de log (après refactoring, sinon on va refactorer le système de log pour rien aussi)
