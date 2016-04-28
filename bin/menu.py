@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import ConfigParser
+import actions
+import os
 #CONSTANTES
 CONFIG_PATH = '/home/pi/RaspiWatch/bin/config.cfg'
 
@@ -47,7 +49,7 @@ def affmenuconfiguration():
 	pHauteur = cfg.get('Photo', 'hauteur')
 	print '//////////////////MENU DE CONFIGURATION/////////////////\n'
 	print '\t   Quel parametre voulez-vous modifier ?'
-	print '\t   1- Resolution Video(' + str(vLargeur)+'*'+ str(vHauteur) +') Photo(' + str(pLargeur) + '*' + str(pHauteur)+')'
+	print '\t   1- Resolution Photo(' + str(pLargeur) + '*' + str(pHauteur)+') Video(' + str(vLargeur)+'*'+ str(vHauteur) +')'
 	print '\t   2- Images par secondes (' + str(ips) +')'
 	print '\t   3- Seuil de detection (' + str(seuil) +'%)'
 	print '\t   4- Luminosite (' + str(luminosite) + '%)'
@@ -99,3 +101,67 @@ def saisir():
 		print 'Merci d\'effectuer une saisie'
 		saisi = raw_input()
 	return saisi
+
+def configuration():
+	"""Gère le menu de configuration"""
+	cfg = ConfigParser.ConfigParser()
+	cfg.read(CONFIG_PATH)
+	vHauteur = cfg.get('Video', 'hauteur')
+	vLargeur = cfg.get('Video', 'largeur')
+	ips = cfg.get('Video', 'ips')
+	seuil = cfg.get('Detection', 'seuil')
+	luminosite = cfg.get('General', 'luminosite')
+	pLargeur = cfg.get('Photo', 'largeur')
+	pHauteur = cfg.get('Photo', 'hauteur')
+	choixconf = '1'
+
+	while(choixconf != '0'):
+
+		affmenuconfiguration()
+		choixconf = saisir()
+
+		os.system("clear")
+
+		if (choixconf == '1'):
+			print 'Changement de la resolution :'
+			affmenuphotovideo()
+			choixpv = saisir()
+			if (choixpv == '0'):
+				choixres = '0'
+			else :
+				choixres = '1'
+
+			os.system("clear")
+			while (choixres != '0'):
+				affmenuresolution()
+
+				choixres = saisir()
+
+				os.system("clear")
+				if (choixpv == '1'):
+					actions.setResPhoto(choixres)
+					choixres = '0'
+				elif (choixpv == '2'):
+					actions.setResVideo(choixres)
+					choixres = '0'
+				else :
+					print 'Erreur de valeur saisie'
+					os.system("clear")
+		elif (choixconf == '2'):
+		#affmenufps()
+			print 'Saisir les ips :'
+			choixfps = saisir()
+			actions.setIps(choixfps)
+			os.system("clear")
+		elif (choixconf == '3'):
+			print "Saisir le seuil en % : "
+			seuil = saisir()
+			actions.setSeuil(seuil)
+		elif (choixconf == '4'):
+			print "Saisir la luminosite en % : "
+			luminosite = saisir()
+			actions.setLuminosite(luminosite)
+		elif (choixconf == '0'):
+			print 'Retour au menu principal ...'
+		else :
+			print 'Erreur de valeur saisie'

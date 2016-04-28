@@ -6,6 +6,8 @@ import ConfigParser
 from datetime import datetime
 import os
 import sys
+import menu
+import log
 
 #CONSTANTES
 BIN_PATH = '/home/pi/RaspiWatch/bin/'
@@ -23,6 +25,7 @@ def demarrerDetec():
     cfg.set('Detection', 'enmarche', 'True')
     cfg.write(open(CONFIG_PATH,'w'))
     os.system("python "+BIN_PATH+"detec.py &")
+    log.demDetect()
     
 def arreterDetec():
     """ Arrête la détection de mouvement en changeant la valeur "en marche" dans la config """
@@ -31,6 +34,7 @@ def arreterDetec():
     cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'enmarche', 'False')
     cfg.write(open(CONFIG_PATH,'w'))
+    log.arrDetect()
 
 
 def prendrePhoto():
@@ -38,6 +42,7 @@ def prendrePhoto():
     nomPhoto = "photo" + getDateName() + ".jpg"
     print 'Prise de la photo ...'
     os.system("raspistill -t 500 -o " + PHOTO_PATH + nomPhoto)
+    log.photo()
 
 
 def prendreVideo(secondes):
@@ -50,6 +55,7 @@ def prendreVideo(secondes):
     os.system("raspistill -t 100 -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
     os.system("raspivid -o " + VIDEO_PATH + nomVideo + ".h264 -t " + str(tps))
+    log.video()
 
 
 def setResVideo(choix):
@@ -72,6 +78,7 @@ def setResVideo(choix):
     cfg.set('Video', 'largeur', largeur)
     cfg.set('Video', 'hauteur', hauteur)
     cfg.write(open(CONFIG_PATH,'w'))
+    log.modResVideo()
 
 
 def setResPhoto(choix):
@@ -94,6 +101,7 @@ def setResPhoto(choix):
     cfg.set('Photo', 'largeur', largeur)
     cfg.set('Photo', 'hauteur', hauteur)
     cfg.write(open(CONFIG_PATH,'w'))
+    log.modResPhoto()
 
 
 def setIps(valeur):
@@ -106,6 +114,7 @@ def setIps(valeur):
     cfg.read(CONFIG_PATH)
     cfg.set('Video', 'ips', valeur)
     cfg.write(open(CONFIG_PATH,'w'))
+    log.modIps()
 
 def setLuminosite(pourcentage):
     """ Change la luminosité de détection, de photo et de vidéo en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -118,6 +127,7 @@ def setLuminosite(pourcentage):
     cfg.read(CONFIG_PATH)
     cfg.set('General', 'luminosite', pourcentage)
     cfg.write(open(CONFIG_PATH,'w'))
+    log.modLuminosite()
 
 def setSeuil(pourcentage):
     """ Change le seuil de détection en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -130,6 +140,7 @@ def setSeuil(pourcentage):
     cfg.read(CONFIG_PATH)
     cfg.set('Detection', 'seuil', pourcentage)
     cfg.write(open(CONFIG_PATH,'w'))
+    log.modSeuil()
 
 def getDateName():
     """ Retourne une chaine de type : "_26-01-95_12:20:30" pour faciliter le nommage des photos et des vidéos """

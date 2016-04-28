@@ -10,11 +10,15 @@ from datetime import datetime
 #Constantes 
 CONFIG_PATH = '/home/pi/RaspiWatch/bin/config.cfg'
 MAKECONFIG_PATH = '/home/pi/RaspiWatch/bin/makecfg.py'
+LOG_PATH = "/home/pi/RaspiWatch/log.txt"
 
 #Debut du programme
 if not os.path.isfile(CONFIG_PATH):
 	os.system("python "+MAKECONFIG_PATH)
-	
+
+#On vérifie que le fichier de log existe sinon on le crée
+if not os.path.isfile(LOG_PATH):
+	os.system("touch "+LOG_PATH)	
 choix = '1'
 
 #Lecture des valeurs du fichier de configuration
@@ -55,60 +59,7 @@ while (choix != '0') :
 	elif (choix == '4'):
 		actions.arreterDetec()
 	elif (choix == '5'):
-		choixconf = '1'
-
-		while(choixconf != '0'):
-
-			menu.affmenuconfiguration()
-			choixconf = menu.saisir()
-
-			os.system("clear")
-
-			if (choixconf == '1'):
-				print 'Changement de la resolution :'
-				menu.affmenuphotovideo()
-				choixpv = menu.saisir()
-				if (choixpv == '0'):
-					choixres = '0'
-				else :
-					choixres = '1'
-
-				os.system("clear")
-				while (choixres != '0'):
-					menu.affmenuresolution()
-
-					choixres = menu.saisir()
-
-					os.system("clear")
-					if (choixpv == '1'):
-						actions.setResPhoto(choixres)
-						choixres = '0'
-					elif (choixpv == '2'):
-						actions.setResVideo(choixres)
-						choixres = '0'
-					else :
-						print 'Erreur de valeur saisie'
-					os.system("clear")
-			elif (choixconf == '2'):
-				#affmenufps()
-				print 'Saisir les ips :'
-				choixfps = menu.saisir()
-				actions.setIps(choixfps)
-				os.system("clear")
-			elif (choixconf == '3'):
-				print "Saisir le seuil en % : "
-				seuil = menu.saisir()
-				actions.setSeuil(seuil)
-			elif (choixconf == '4'):
-				print "Saisir la luminosite en % : "
-				luminosite = menu.saisir()
-				actions.setLuminosite(luminosite)
-			elif (choixconf == '0'):
-				print 'Retour au menu principal ...'
-			else :
-				print 'Erreur de valeur saisie'
-		#J'enlève la ligne suivante car elle n'est plus nécessaire normalement (l'écriture se fait directement après la modification)
-		#cfg.write(open('config.cfg','w'))
+		menu.configuration()
 	elif (choix == '6'):
 		print 'Chargement de la configuration ...'
 	elif (choix == '0'):
