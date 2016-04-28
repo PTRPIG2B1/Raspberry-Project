@@ -1,0 +1,8 @@
+Prise d'une photo le _23-4-2016_12:47:28
+Prise d'une photo le _23-4-2016_12:47:31
+Modification de la résolution photo _23-4-2016_13:5:35
+Lancement de la detection _23-4-2016_13:6:48
+Lancement de la detection _23-4-2016_13:6:51
+Arret de la detection _23-4-2016_13:7:25
+Lancement de la detection _23-4-2016_13:7:29
+Arret de la detection _23-4-2016_13:7:31
