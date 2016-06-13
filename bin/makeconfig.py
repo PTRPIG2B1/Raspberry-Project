@@ -28,5 +28,9 @@ cfg.add_section(S)
 cfg.set(S, 'largeur', '1280')
 cfg.set(S, 'hauteur', '720')
 
+S = 'Email'
+cfg.add_section(S)
+cfg.set(S, 'email', 'votremail@mail.fr')
+
 cfg.write(open(CONFIG_PATH,'w'))
 
