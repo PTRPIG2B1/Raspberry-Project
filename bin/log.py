@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import actions
 
-LOG_PATH = "/home/pi/RaspiWatch/log.txt"
+LOG_PATH = "/home/pi/RaspiWatch/bin/log.txt"
 
 def photo():
 	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
@@ -82,3 +82,18 @@ def modSeuil():
 	logmsg = "Modification du seuil "+actions.getDateName()+"\n"
 	log.write(logmsg)
 	log.close()
+	
+def videoDetec():
+	"""Permet d'écrite dans le fichier log qu'une video a été enregistrée après une détection"""
+	log = open(LOG_PATH, "a")
+	logmsg = "Prise d'une vidéo après détection"+actions.getDateName()+"\n"
+	log.write(logmsg)
+	log.close()
+
+def erreur(texte):
+	"""Permet d'écrire les erreurs dans le fichier log (utilisé dans de multiples modules"""
+	log = open(LOG_PATH, "a")
+	logmsg = "ERREUR : " + texte + actions.getDateName()+"\n"
+	print logmsg
+	log.write(logmsg)
+	log.close()	

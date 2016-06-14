@@ -3,6 +3,7 @@
 
 import ConfigParser
 import os
+import log
 import getpass
 import smtplib
 import subprocess
@@ -16,9 +17,14 @@ GMAIL_USER = "ptrpig2b1@gmail.com"
 GMAIL_PWD = "groupeg2b"
 
 cfg = ConfigParser.ConfigParser()
+
 cfg.read(CONFIG_PATH)
 
-GMAIL_TO = cfg.get('Email', 'email')
+try:
+	GMAIL_TO = cfg.get('Email', 'email')
+except Exception:
+	log.erreur("Mail non défini dans config.cfg")
+	exit()
 
 def envoyerEmail(objet, corps, mailtype):
     FROM = GMAIL_USER

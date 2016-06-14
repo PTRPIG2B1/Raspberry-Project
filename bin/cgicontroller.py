@@ -26,7 +26,8 @@ elif action == "on":
 elif action == "photo":
     actions.prendrePhoto()
 elif action == "video":
-    actions.prendreVideo(5)
+    duree = args[3]
+    actions.prendreVideo(duree)
 else:
     for i in range(0,len(args)-1,2):
 

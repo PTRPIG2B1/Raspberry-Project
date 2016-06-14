@@ -33,8 +33,6 @@ vLargeur = cfg.get('Video', 'largeur')
 ips = cfg.get('Video', 'ips')
 seuil = cfg.get('Detection', 'seuil')
 luminosite = cfg.get('General', 'luminosite')
-pLargeur = cfg.get('Photo', 'largeur')
-pHauteur = cfg.get('Photo', 'hauteur')
 os.system("clear")
 
 #Début du programme 
@@ -52,11 +50,13 @@ while (choix != '0') :
 		actions.prendrePhoto()
 	elif (choix == '2'):
 		print "Duree de la vidéo ? (en secondes)"
-		secondes = saisir()
+		secondes = menu.saisir()
 		actions.prendreVideo(secondes)
 	elif (choix == '3'):
+		detectEnMarche = 'True'
 		actions.demarrerDetec()
 	elif (choix == '4'):
+		detectEnMarche = 'False'
 		actions.arreterDetec()
 	elif (choix == '5'):
 		menu.configuration()

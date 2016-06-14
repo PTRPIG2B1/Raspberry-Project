@@ -8,6 +8,8 @@ import os
 import sys
 import menu
 import log
+from time import time, sleep
+import picamera
 
 #CONSTANTES
 BIN_PATH = '/home/pi/RaspiWatch/bin/'
@@ -39,22 +41,36 @@ def arreterDetec():
 
 def prendrePhoto():
     """ Prend une photo, la nomme avec la date et l'heure, et la place dans le dossier RaspiWatch/photo """
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
     nomPhoto = "photo" + getDateName() + ".jpg"
     print 'Prise de la photo ...'
-    os.system("raspistill -t 500 -o " + PHOTO_PATH + nomPhoto)
+    LARGEUR = cfg.get('Video','largeur')
+    HAUTEUR = cfg.get('Video','hauteur')
+    LUMINOSITE = cfg.get('General','luminosite')
+    os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
     log.photo()
 
 
 def prendreVideo(secondes):
     """ Prend une video, la nomme avec la date et l'heure, et la place dans le dossier RaspiWatch/video
         Prend aussi la miniature correspondante à la vidéo, et la place dans RaspiWatch/video/miniatures """
-    tps = secondes*1000
+    cfg = ConfigParser.ConfigParser()
+    cfg.read(CONFIG_PATH)
+    tps = int(secondes)*1000
     maintenant = datetime.now()
     nomVideo = "video" + getDateName()
     print 'Prise de la miniature ...'
-    os.system("raspistill -t 100 -o " + MINIATURES_PATH + nomVideo + ".jpg")
+    LARGEUR = cfg.get('Video','largeur') 
+    HAUTEUR = cfg.get('Video','hauteur')
+    LUMINOSITE = cfg.get('General','luminosite')
+    IPS = cfg.get('Video','ips')
+    os.system("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
-    os.system("raspivid -o " + VIDEO_PATH + nomVideo + ".h264 -t " + str(tps))
+    #os.system("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
+    os.system("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
+    os.system("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
+    os.system("rm " + VIDEO_PATH + "temp.h264")
     log.video()
 
 
@@ -79,31 +95,7 @@ def setResVideo(choix):
     cfg.set('Video', 'hauteur', hauteur)
     cfg.write(open(CONFIG_PATH,'w'))
     log.modResVideo()
-
-
-def setResPhoto(choix):
-    """ Change la résolution photo dans la configuration, en fonction des 3 choix disponibles. En cas de mauvaise saisie,
-        la résolution la plus petite est utilisée """
-    if (choix == '1'):
-        largeur = 1920
-        hauteur = 1080
-    elif (choix == '2'):
-        largeur = 1280
-        hauteur = 720
-    elif (choix == '0'):
-        #On quitte
-        print 'Retour'
-    else:
-        largeur = 640
-        hauteur = 480
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    cfg.set('Photo', 'largeur', largeur)
-    cfg.set('Photo', 'hauteur', hauteur)
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.modResPhoto()
-
-
+    
 def setIps(valeur):
     """ Change la cadence de vidéo dans la configuration. """
     if valeur < 10:
@@ -145,5 +137,28 @@ def setSeuil(pourcentage):
 def getDateName():
     """ Retourne une chaine de type : "_26-01-95_12:20:30" pour faciliter le nommage des photos et des vidéos """
     maintenant = datetime.now()
-    nom = "_" + str(maintenant.day) + "-" + str(maintenant.month) + "-" + str(maintenant.year) + "_" + str(maintenant.hour) + ":" + str(maintenant.minute) + ":" + str(maintenant.second)
+    nom = "_" + str(maintenant.year) + "-" + str('%02d' % maintenant.month) + "-" + str('%02d' % maintenant.day) + "_" + str('%02d' % maintenant.hour) + ":" + str('%02d' % maintenant.minute) + ":" + str('%02d' % maintenant.second)
     return nom
+    
+#def videoDetec():
+#    """Lance une video au moment de la detection la video durera 10sec"""
+#    cfg = ConfigParser.ConfigParser()
+#    cfg.read(CONFIG_PATH)
+#    mouvement = cfg.get('Detection','mouvement')
+#    
+#    camera = picamera.PiCamera()
+#    print 'Before While'
+#    while mouvement : 
+#        print 'Dans le while'
+#        if not camera.recording :
+#            print 'Dans le if'
+#            nomVideo = "videoDetecAuto" + getDateName()
+#            camera.start_recording(VIDEO_PATH + nomVideo + ".h264")
+#        print 'Plus dans le if lol'
+#        cfg.read(CONFIG_PATH)
+#        mouvement = cfg.get('Detection','mouvement')
+#        
+#    camera.stop_recording()
+#    print 'Stop video'
+#    log.videoDetec()
+#    time.sleep(10)

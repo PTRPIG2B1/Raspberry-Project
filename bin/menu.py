@@ -45,11 +45,9 @@ def affmenuconfiguration():
 	ips = cfg.get('Video', 'ips')
 	seuil = cfg.get('Detection', 'seuil')
 	luminosite = cfg.get('General', 'luminosite')
-	pLargeur = cfg.get('Photo', 'largeur')
-	pHauteur = cfg.get('Photo', 'hauteur')
 	print '//////////////////MENU DE CONFIGURATION/////////////////\n'
 	print '\t   Quel parametre voulez-vous modifier ?'
-	print '\t   1- Resolution Photo(' + str(pLargeur) + '*' + str(pHauteur)+') Video(' + str(vLargeur)+'*'+ str(vHauteur) +')'
+	print '\t   1- Resolution '+'('+vLargeur+ '*'+vHauteur+')'
 	print '\t   2- Images par secondes (' + str(ips) +')'
 	print '\t   3- Seuil de detection (' + str(seuil) +'%)'
 	print '\t   4- Luminosite (' + str(luminosite) + '%)'
@@ -79,15 +77,15 @@ def affmenufps():
 	print '////////////////////////////////////////////////////////'
 	print 'Votre choix : '
 
-def affmenuphotovideo():
-	"""Affiche le menu qui permet le choix entre photo et video pour le changement de resolution"""
-	print '//////////////////MENU CHGMT RESOLUTION//////////////////\n'
-	print '\t   Que voulez-vous modifier ?'
-	print '\t   1- Photo'
-	print '\t   2- Video'
-	print '\t   0- Quitter\n'
-	print '////////////////////////////////////////////////////////'
-	print 'Votre choix : '
+#def affmenuphotovideo():
+#	"""Affiche le menu qui permet le choix entre photo et video pour le changement de resolution"""
+#	print '//////////////////MENU CHGMT RESOLUTION//////////////////\n'
+#	print '\t   Que voulez-vous modifier ?'
+#	print '\t   1- Photo'
+#	print '\t   2- Video'
+#	print '\t   0- Quitter\n'
+#	print '////////////////////////////////////////////////////////'
+#	print 'Votre choix : '
 
 #La fonction est inutile normalement
 def sauvegarderConfiguration():
@@ -111,8 +109,6 @@ def configuration():
 	ips = cfg.get('Video', 'ips')
 	seuil = cfg.get('Detection', 'seuil')
 	luminosite = cfg.get('General', 'luminosite')
-	pLargeur = cfg.get('Photo', 'largeur')
-	pHauteur = cfg.get('Photo', 'hauteur')
 	choixconf = '1'
 
 	while(choixconf != '0'):
@@ -124,29 +120,16 @@ def configuration():
 
 		if (choixconf == '1'):
 			print 'Changement de la resolution :'
-			affmenuphotovideo()
-			choixpv = saisir()
-			if (choixpv == '0'):
-				choixres = '0'
-			else :
-				choixres = '1'
-
-			os.system("clear")
+			choixres = '1'
+			
 			while (choixres != '0'):
 				affmenuresolution()
 
 				choixres = saisir()
-
+					
+				actions.setResVideo(choixres)
+				choixres = '0'
 				os.system("clear")
-				if (choixpv == '1'):
-					actions.setResPhoto(choixres)
-					choixres = '0'
-				elif (choixpv == '2'):
-					actions.setResVideo(choixres)
-					choixres = '0'
-				else :
-					print 'Erreur de valeur saisie'
-					os.system("clear")
 		elif (choixconf == '2'):
 		#affmenufps()
 			print 'Saisir les ips :'
@@ -160,6 +143,7 @@ def configuration():
 		elif (choixconf == '4'):
 			print "Saisir la luminosite en % : "
 			luminosite = saisir()
+			luminosite = int(luminosite)
 			actions.setLuminosite(luminosite)
 		elif (choixconf == '0'):
 			print 'Retour au menu principal ...'
