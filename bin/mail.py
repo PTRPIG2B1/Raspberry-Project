@@ -53,7 +53,9 @@ def getIp():
 	return ips
 
 def envoyerMailErreur(corps):
+	log.erreur(corps)
 	envoyerEmail('Erreur RaspiWatch', corps, 'ERREUR')
+
 
 def envoyerMailDetection():
 	corps = 'Détection le : ' + strftime("%d-%m-%Y à %H:%M:%S", gmtime()) +'.\n'

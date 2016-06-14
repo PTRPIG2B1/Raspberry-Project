@@ -91,7 +91,7 @@ def videoDetec():
 	log.close()
 
 def erreur(texte):
-	"""Permet d'écrire les erreurs dans le fichier log (utilisé dans de multiples modules"""
+	"""Permet d'écrire les erreurs dans le fichier log (utilisé dans de multiples modules)"""
 	log = open(LOG_PATH, "a")
 	logmsg = "ERREUR : " + texte + actions.getDateName()+"\n"
 	print logmsg

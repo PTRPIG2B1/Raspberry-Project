@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import sys
 import menu
+import mail
 import log
 from time import time, sleep
 import picamera
@@ -24,7 +25,10 @@ def demarrerDetec():
     print 'Demarrage de la detection ...'
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('Detection', 'enmarche', 'True')
+    try:
+        cfg.set('Detection', 'enmarche', 'True')
+    except Exception:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
     cfg.write(open(CONFIG_PATH,'w'))
     os.system("python "+BIN_PATH+"detec.py &")
     log.demDetect()
@@ -34,7 +38,10 @@ def arreterDetec():
     print 'Arret de la detection ...'
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('Detection', 'enmarche', 'False')
+    try:
+        cfg.set('Detection', 'enmarche', 'False')
+    except Exception:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
     cfg.write(open(CONFIG_PATH,'w'))
     log.arrDetect()
 
@@ -45,11 +52,16 @@ def prendrePhoto():
     cfg.read(CONFIG_PATH)
     nomPhoto = "photo" + getDateName() + ".jpg"
     print 'Prise de la photo ...'
-    LARGEUR = cfg.get('Video','largeur')
-    HAUTEUR = cfg.get('Video','hauteur')
-    LUMINOSITE = cfg.get('General','luminosite')
-    os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
-    log.photo()
+    try:
+        LARGEUR = cfg.get('Video','largeur')
+        HAUTEUR = cfg.get('Video','hauteur')
+        LUMINOSITE = cfg.get('General','luminosite')
+        os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
+        log.photo()
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 
 def prendreVideo(secondes):
@@ -61,18 +73,24 @@ def prendreVideo(secondes):
     maintenant = datetime.now()
     nomVideo = "video" + getDateName()
     print 'Prise de la miniature ...'
-    LARGEUR = cfg.get('Video','largeur') 
-    HAUTEUR = cfg.get('Video','hauteur')
-    LUMINOSITE = cfg.get('General','luminosite')
-    IPS = cfg.get('Video','ips')
+    try:
+        LARGEUR = cfg.get('Video','largeur') 
+        HAUTEUR = cfg.get('Video','hauteur')
+        LUMINOSITE = cfg.get('General','luminosite')
+        IPS = cfg.get('Video','ips')
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+
     os.system("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
     #os.system("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
     os.system("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
     os.system("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
     os.system("rm " + VIDEO_PATH + "temp.h264")
-    log.video()
-
+    try:
+        log.video()
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 def setResVideo(choix):
     """ Change la résolution vidéo dans la configuration, en fonction des 3 choix disponibles. En cas de mauvaise saisie,
@@ -91,10 +109,15 @@ def setResVideo(choix):
         hauteur = 480
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('Video', 'largeur', largeur)
-    cfg.set('Video', 'hauteur', hauteur)
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.modResVideo()
+    try:
+        cfg.set('Video', 'largeur', largeur)
+        cfg.set('Video', 'hauteur', hauteur)
+        cfg.write(open(CONFIG_PATH,'w'))
+        log.modResVideo()
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
     
 def setIps(valeur):
     """ Change la cadence de vidéo dans la configuration. """
@@ -104,9 +127,14 @@ def setIps(valeur):
         valeur = 30
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('Video', 'ips', valeur)
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.modIps()
+    try:
+        cfg.set('Video', 'ips', valeur)
+        cfg.write(open(CONFIG_PATH,'w'))
+        log.modIps()
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 def setLuminosite(pourcentage):
     """ Change la luminosité de détection, de photo et de vidéo en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -117,9 +145,14 @@ def setLuminosite(pourcentage):
         pourcentage = 100
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('General', 'luminosite', pourcentage)
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.modLuminosite()
+    try:
+        cfg.set('General', 'luminosite', pourcentage)
+        cfg.write(open(CONFIG_PATH,'w'))
+        log.modLuminosite()
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 def setSeuil(pourcentage):
     """ Change le seuil de détection en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -130,9 +163,14 @@ def setSeuil(pourcentage):
         pourcentage = 100
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
-    cfg.set('Detection', 'seuil', pourcentage)
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.modSeuil()
+    try:
+        cfg.set('Detection', 'seuil', pourcentage)
+        cfg.write(open(CONFIG_PATH,'w'))
+        log.modSeuil()
+    except NoSectionError:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 def getDateName():
     """ Retourne une chaine de type : "_26-01-95_12:20:30" pour faciliter le nommage des photos et des vidéos """

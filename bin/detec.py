@@ -7,6 +7,7 @@ import math
 import sys
 import time
 import os
+import mail
 import ConfigParser
 import actions
 
@@ -20,8 +21,11 @@ IMAGEMOUVEMENT_PATH='/home/pi/RaspiWatch/photo/Image_Mouvement_'+actions.getDate
 
 cfg = ConfigParser.ConfigParser()
 cfg.read(CONFIG_PATH)
-
-SEUIL_CONF = cfg.get('Detection', 'seuil')
+try:
+    SEUIL_CONF = cfg.get('Detection', 'seuil')
+except NoSectionError:
+    SEUIL_CONF = 50
+    print "Erreur de configuration, utilisation du seuil défaut (50)"
 LARGEUR = 640
 HAUTEUR = 480
 
@@ -63,7 +67,11 @@ while enFonctionnement == 'True' :
         os.system('raspistill -w '+str(LARGEUR)+' -h '+str(HAUTEUR)+' -t 500 -o '+IMAGE2_PATH)
     
     cfg.read(CONFIG_PATH)
-    enFonctionnement = cfg.get('Detection', 'enmarche')
+    try:
+        enFonctionnement = cfg.get('Detection', 'enmarche')
+    except NoSectionError:
+        mail.envoyerMailErreur("ERREUR : Configuration de config.cfg dans detec.py. Arrêt de la détection")
+        exit()
     
 os.system('rm '+IMAGE1_PATH+' && rm '+IMAGE2_PATH)
 

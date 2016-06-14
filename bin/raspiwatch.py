@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import actions
 import menu
+import mail
 import os
 import ConfigParser
 import sys
@@ -27,13 +28,17 @@ cfg = ConfigParser.ConfigParser()
 cfg.read(CONFIG_PATH)
 
 #attribution à des variables pour permettre le traitement au sein du programme
-detectEnMarche = cfg.get('Detection', 'enmarche')
-vHauteur = cfg.get('Video', 'hauteur')
-vLargeur = cfg.get('Video', 'largeur')
-ips = cfg.get('Video', 'ips')
-seuil = cfg.get('Detection', 'seuil')
-luminosite = cfg.get('General', 'luminosite')
-os.system("clear")
+try:
+    detectEnMarche = cfg.get('Detection', 'enmarche')
+    vHauteur = cfg.get('Video', 'hauteur')
+    vLargeur = cfg.get('Video', 'largeur')
+    ips = cfg.get('Video', 'ips')
+    seuil = cfg.get('Detection', 'seuil')
+    luminosite = cfg.get('General', 'luminosite')
+    os.system("clear")
+except NoSectionError:
+    mail.envoyerMailErreur("ERREUR : Problème de config.cfg dans raspiwatch.py")
+    exit()
 
 #Début du programme 
 while (choix != '0') :
