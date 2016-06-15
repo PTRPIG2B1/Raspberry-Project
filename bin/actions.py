@@ -23,6 +23,7 @@ MINIATURES_PATH = '/home/pi/RaspiWatch/video/miniatures/'
 
 def executerCommande(cmd):
     '''Cette procédure permet d'éxécuter une commande plus proprement qu'avec os.system. On peut retrouver les erreurs grave au code de retour.'''
+    cmd = cmd.split(" ")
     #Exécution de la commande
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
