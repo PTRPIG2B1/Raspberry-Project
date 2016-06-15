@@ -34,7 +34,7 @@ def demarrerDetec():
     #ret contient la valeur de retour de la commande. On l'utilise pour voir s'il y a eu une erreur
     ret = os.system("python "+BIN_PATH+"detec.py &")
     if ret != 0:
-	mail.envoyerMailErreur("Ne peut pas lancer la détection")
+	    mail.envoyerMailErreur("Ne peut pas lancer la détection")
     log.demDetect()
     
 def arreterDetec():
@@ -60,7 +60,9 @@ def prendrePhoto():
         LARGEUR = cfg.get('Video','largeur')
         HAUTEUR = cfg.get('Video','hauteur')
         LUMINOSITE = cfg.get('General','luminosite')
-        os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
+        ret = os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
+        if ret != 0:
+	        mail.envoyerMailErreur("Ne peut pas prendre une photo")
         log.photo()
     except NoSectionError:
         mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
@@ -85,12 +87,16 @@ def prendreVideo(secondes):
     except NoSectionError:
         mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
 
-    os.system("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
+    ret = os.system("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
-    #os.system("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
-    os.system("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
-    os.system("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
-    os.system("rm " + VIDEO_PATH + "temp.h264")
+    #ret += os.system("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
+    ret += os.system("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
+    ret += os.system("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
+    ret += os.system("rm " + VIDEO_PATH + "temp.h264")
+
+    if ret != 0:
+	        mail.envoyerMailErreur("Ne peut pas enregister la vidéo")
+
     try:
         log.video()
     except IOError:
@@ -98,7 +104,12 @@ def prendreVideo(secondes):
 
 
 def supprimerPhoto(nom):
-    os.system("rm /home/pi/RaspiWatch/photo/"+nom)
+    '''Cette fonction permet de supprimer une photo'''
+    ret = os.system("rm /home/pi/RaspiWatch/photo/"+nom)
+
+    if ret != 0:
+	        mail.envoyerMailErreur("Ne peut pas supprimer la photo")
+
     try:
         log.suppressionPhoto(nom)
     except IOError:
@@ -106,8 +117,12 @@ def supprimerPhoto(nom):
 
 
 def supprimerVideo(nom):
-    os.system("rm /home/pi/RaspiWatch/video/"+nom)
-    os.system("rm /home/pi/RaspiWatch/video/miniatures/"+nom)
+    '''Cette fonction permet de supprimer une vidéo. Il supprime aussi la miniature associé à la vidéo'''
+    ret = os.system("rm /home/pi/RaspiWatch/video/"+nom)
+    ret += os.system("rm /home/pi/RaspiWatch/video/miniatures/"+nom)
+    if ret != 0:
+	        mail.envoyerMailErreur("Ne peut pas supprimer la vidéo")
+
     try:
         log.suppressionVideo(nom)
     except IOError:
