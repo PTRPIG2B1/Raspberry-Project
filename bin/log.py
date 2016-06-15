@@ -4,120 +4,67 @@ import actions
 
 LOG_PATH = "/home/pi/RaspiWatch/bin/log.txt"
 
-def photo():
-	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Prise d'une photo "+actions.getDateName()+"\n"
+def log(msg):
+    log = open(LOG_PATH, "a")
+	logmsg = msg + " " +actions.getDateName()+"\n"
 	log.write(logmsg)
 	log.close()
+
+def photo():
+	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
+	log("Prise d'une photo")
 
 def video():
 	"""Permet d'écrire dans le fichier log qu'une vidéo à été prise"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Prise d'une vidéo "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Prise d'une vidéo")
 
 def demDetect():
 	"""Permet d'écrire dans le fichier log que la détection à été lancé"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Lancement de la detection "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Lancement de la détection")
 
 def arrDetect():
 	"""Permet d'écrire dans le fichier log que la detection à été arrété"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Arret de la detection "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
-
-#Dans actions il n'y a pas de distinction entre arret et arret forcé
-# def arrForDetect():
-# 	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
-# 	log = open(LOG_PATH, "a")
-# 	logmsg = "Prise d'une photo le "+actions.getDateName()+"\n"
-# 	log.write(logmsg)
-# 	log.close()
-
-#Dans actions il n'y a pas de distinction entre demarrage et redemarrage
-# def reDemDetect():
-# 	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
-# 	log = open(LOG_PATH, "a")
-# 	logmsg = "Prise d'une photo le "+actions.getDateName()+"\n"
-# 	log.write(logmsg)
-# 	log.close()
+	log("Arrêt de la détection")
 
 def modResPhoto():
 	"""Permet d'écrire dans le fichier log que la resolution photo à été modifié"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Modification de la résolution photo "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Modification de la résolution photo")
 
 def modResVideo():
 	"""Permet d'écrire dans le fichier log que la resolution vidéo à été modifié"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Modification de la résolution vidéo "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Modification de la résolution vidéo")
 
 def modIps():
 	"""Permet d'écrire dans le fichier log que le nombre d'images par secondes à été modifié"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Modification des IPS "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Modification des IPS")
 
 def modLuminosite():
 	"""Permet d'écrire dans le fichier log que la luminosité à été modifié"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Modification de la luminosité "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Modification de la luminosité")
 
 def modSeuil():
 	"""Permet d'écrire dans le fichier log que le seuil à été modifié"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Modification du seuil "+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Modification du seuil")
 	
 def videoDetec():
 	"""Permet d'écrite dans le fichier log qu'une video a été enregistrée après une détection"""
-	log = open(LOG_PATH, "a")
-	logmsg = "Prise d'une vidéo après détection"+actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+	log("Prise d'une vidéo après détection")
 
 def erreur(texte):
 	"""Permet d'écrire les erreurs dans le fichier log (utilisé dans de multiples modules)"""
-	log = open(LOG_PATH, "a")
-	logmsg = "ERREUR : " + texte + actions.getDateName()+"\n"
-	print logmsg
-	log.write(logmsg)
-	log.close()
+	log("ERREUR : " + texte)
+
 
 def mouvement():
     """Permet d'écrire dans le fichier lors de la détection d'un mouvement"""
-    log = open(LOG_PATH, "a")
-    logmsg = "Mouvement détecté "+actions.getDateName()+"\n"
-    log.write(logmsg)
-    log.close()
-
+    log("Mouvement détecté")
 
 def suppressionPhoto(nom):
     """Permet de logger une suppression de photo"""
-    log = open(LOG_PATH, "a")
-    logmsg = "Suppression de la photo "+nom+" à "+actions.getDateName()+"\n"
-    log.write(logmsg)
-    log.close()
+    log("Suppression de la photo "+nom)
 
 def suppressionVideo(nom):
     """Permet de logger une suppression de video"""
-    log = open(LOG_PATH, "a")
-    logmsg = "Suppression de la vidéo "+nom+" à "+actions.getDateName()+"\n"
-    log.write(logmsg)
-    log.close()
+    log("Suppression de la vidéo "+nom)
 
 	

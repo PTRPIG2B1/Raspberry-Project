@@ -11,6 +11,7 @@ import mail
 import log
 from time import time, sleep
 import picamera
+import subprocess
 
 #CONSTANTES
 BIN_PATH = '/home/pi/RaspiWatch/bin/'
@@ -20,113 +21,120 @@ VIDEO_PATH = '/home/pi/RaspiWatch/video/'
 MINIATURES_PATH = '/home/pi/RaspiWatch/video/miniatures/'
 
 
-def demarrerDetec():
-    """ Execute le script de détection. ATTENTION : On modifie la configuration ici, il est donc inutile de le changer dans "detec.py" """
-    print 'Demarrage de la detection ...'
+def executerCommande(cmd):
+    '''Cette procédure permet d'éxécuter une commande plus proprement qu'avec os.system. On peut retrouver les erreurs grave au code de retour.'''
+    #Exécution de la commande
+    p = subprocess.Popen(cmd, stdin=subprocessPIPE, stdout=subprocessPIPE, stderr=subprocessPIPE)
+
+    #Attente de la fin de l'exec, puis récupération des retours (STDOUT et STDERR)
+    p.wait()
+    out, err = p.communicate()
+
+    rc = p.returncode
+
+    #Un code de retour différent de 0 signifie qu'il y a eu une erreur
+    if rc != 0:
+        mail.envoyerMailErreur("Code retour : " + str(rc) + " --- STDOUT : " + str(out) + " --- STDERR : " + str(err))
+    return rc
+
+def ecrireConfig(section, key, value):
     cfg = ConfigParser.ConfigParser()
     cfg.read(CONFIG_PATH)
     try:
-        cfg.set('Detection', 'enmarche', 'True')
-    except Exception:
+        cfg.set(section, key, value)
+        cfg.write(open(CONFIG_PATH,'w'))
+    except:
         mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    cfg.write(open(CONFIG_PATH,'w'))
 
-    #ret contient la valeur de retour de la commande. On l'utilise pour voir s'il y a eu une erreur
-    ret = os.system("python "+BIN_PATH+"detec.py &")
-    if ret != 0:
-	    mail.envoyerMailErreur("Ne peut pas lancer la détection")
-    log.demDetect()
+
+def lireConfig(section, key):
+    val = 0
+    try:
+        cfg = ConfigParser.ConfigParser()
+        cfg.read(CONFIG_PATH)
+        val = cfg.get(section, key)
+    except:
+        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
+    return val
+
+
+def demarrerDetec():
+    """ Execute le script de détection """
+    print 'Demarrage de la detection ...'
+    ecrireConfig('Detection', 'enmarche', 'True')
+    rc = executerCommande("python "+BIN_PATH+"detec.py &")
+    if rc == 0:
+        log.demDetect()
     
+
+
 def arreterDetec():
     """ Arrête la détection de mouvement en changeant la valeur "en marche" dans la config """
     print 'Arret de la detection ...'
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    try:
-        cfg.set('Detection', 'enmarche', 'False')
-    except Exception:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    cfg.write(open(CONFIG_PATH,'w'))
-    log.arrDetect()
+    ecrireConfig('Detection', 'enmarche', 'False')
+    rc = executerCommande("python "+BIN_PATH+"detec.py &")
+    if rc == 0:
+        log.arrDetect()
+
 
 
 def prendrePhoto():
     """ Prend une photo, la nomme avec la date et l'heure, et la place dans le dossier RaspiWatch/photo """
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
     nomPhoto = "photo" + getDateName() + ".jpg"
     print 'Prise de la photo ...'
-    try:
-        LARGEUR = cfg.get('Video','largeur')
-        HAUTEUR = cfg.get('Video','hauteur')
-        LUMINOSITE = cfg.get('General','luminosite')
-        ret = os.system("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
-        if ret != 0:
-	        mail.envoyerMailErreur("Ne peut pas prendre une photo")
+  
+    LARGEUR = lireConfig('Video', 'largeur')
+    HAUTEUR = lireConfig('Video', 'hauteur')
+    LUMINOSITE = lireConfig('General','luminosite')
+
+    rc = executerCommande("raspistill -t 500 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + PHOTO_PATH + nomPhoto)
+
+    if rc == 0:
         log.photo()
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
 
 
 def prendreVideo(secondes):
     """ Prend une video, la nomme avec la date et l'heure, et la place dans le dossier RaspiWatch/video
         Prend aussi la miniature correspondante à la vidéo, et la place dans RaspiWatch/video/miniatures """
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
     tps = int(secondes)*1000
     maintenant = datetime.now()
     nomVideo = "video" + getDateName()
     print 'Prise de la miniature ...'
-    try:
-        LARGEUR = cfg.get('Video','largeur') 
-        HAUTEUR = cfg.get('Video','hauteur')
-        LUMINOSITE = cfg.get('General','luminosite')
-        IPS = cfg.get('Video','ips')
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
 
-    ret = os.system("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
+    LARGEUR = lireConfig('Video', 'largeur')
+    HAUTEUR = lireConfig('Video', 'hauteur')
+    LUMINOSITE = lireConfig('General','luminosite')
+    IPS = lireConfig('Video','ips')
+
+
+    rc = executerCommande("raspistill -t 100 -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + MINIATURES_PATH + nomVideo + ".jpg")
     print 'Enregistrement de la video ...'
-    #ret += os.system("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
-    ret += os.system("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
-    ret += os.system("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
-    ret += os.system("rm " + VIDEO_PATH + "temp.h264")
+    #executerCommande("raspivid -t 5000 -fps 30 -w 640 -h 480 -br 50 -o test.h264")
+    rc += executerCommande("raspivid -t "+str(tps)+" -fps "+IPS+" -w "+LARGEUR+" -h "+HAUTEUR+" -br "+LUMINOSITE+" -o " + VIDEO_PATH + "temp.h264")
+    rc += executerCommande("MP4Box -add " + VIDEO_PATH + "temp.h264 "+ VIDEO_PATH + nomVideo+".mp4")
+    rc += executerCommande("rm " + VIDEO_PATH + "temp.h264")
 
-    if ret != 0:
-	        mail.envoyerMailErreur("Ne peut pas enregister la vidéo")
-
-    try:
+    if rc == 0:
         log.video()
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
 
 
 def supprimerPhoto(nom):
     '''Cette fonction permet de supprimer une photo'''
-    ret = os.system("rm /home/pi/RaspiWatch/photo/"+nom)
+    rc = executerCommande("rm /home/pi/RaspiWatch/photo/"+nom)
 
-    if ret != 0:
-	        mail.envoyerMailErreur("Ne peut pas supprimer la photo")
-
-    try:
+    if rc == 0:
         log.suppressionPhoto(nom)
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+ 
 
 
 def supprimerVideo(nom):
     '''Cette fonction permet de supprimer une vidéo. Il supprime aussi la miniature associé à la vidéo'''
-    ret = os.system("rm /home/pi/RaspiWatch/video/"+nom)
-    ret += os.system("rm /home/pi/RaspiWatch/video/miniatures/"+nom)
-    if ret != 0:
-	        mail.envoyerMailErreur("Ne peut pas supprimer la vidéo")
-
-    try:
+    rc = executerCommande("rm /home/pi/RaspiWatch/video/"+nom)
+    rc += executerCommande("rm /home/pi/RaspiWatch/video/miniatures/"+nom)
+    if rc == 0:
         log.suppressionVideo(nom)
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
     
 
 def setResVideo(choix):
@@ -144,17 +152,11 @@ def setResVideo(choix):
     else:
         largeur = 640
         hauteur = 480
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    try:
-        cfg.set('Video', 'largeur', largeur)
-        cfg.set('Video', 'hauteur', hauteur)
-        cfg.write(open(CONFIG_PATH,'w'))
-        log.modResVideo()
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+    ecrireConfig('Video', 'largeur', largeur)
+    ecrireConfig('Video', 'hauteur', hauteur)
+    
+    log.modResVideo()
+
          
 def setIps(valeur):
     """ Change la cadence de vidéo dans la configuration. """
@@ -162,16 +164,8 @@ def setIps(valeur):
         valeur = 10
     if valeur > 30:
         valeur = 30
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    try:
-        cfg.set('Video', 'ips', valeur)
-        cfg.write(open(CONFIG_PATH,'w'))
-        log.modIps()
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+    ecrireConfig('Video', 'ips', valeur)
+    log.modIps()
 
 def setLuminosite(pourcentage):
     """ Change la luminosité de détection, de photo et de vidéo en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -180,16 +174,11 @@ def setLuminosite(pourcentage):
         pourcentage = 0
     if pourcentage > 100:
         pourcentage = 100
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    try:
-        cfg.set('General', 'luminosite', pourcentage)
-        cfg.write(open(CONFIG_PATH,'w'))
-        log.modLuminosite()
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
+    ecrireConfig('General', 'luminosite', pourcentage)
+
+    log.modLuminosite()
+
 
 def setSeuil(pourcentage):
     """ Change le seuil de détection en prenant en paramètre le pourcentage voulu. Cette procédure
@@ -198,16 +187,11 @@ def setSeuil(pourcentage):
         pourcentage = 0
     if pourcentage > 100:
         pourcentage = 100
-    cfg = ConfigParser.ConfigParser()
-    cfg.read(CONFIG_PATH)
-    try:
-        cfg.set('Detection', 'seuil', pourcentage)
-        cfg.write(open(CONFIG_PATH,'w'))
-        log.modSeuil()
-    except NoSectionError:
-        mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
-    except IOError:
-        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
+    ecrireConfig('Detection', 'seuil', pourcentage)
+
+    log.modSeuil()
+
 
 def getDateName():
     """ Retourne une chaine de type : "_26-01-95_12:20:30" pour faciliter le nommage des photos et des vidéos """
