@@ -118,7 +118,7 @@ def setResVideo(choix):
         mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
     except IOError:
         mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
-    
+         
 def setIps(valeur):
     """ Change la cadence de vidéo dans la configuration. """
     if valeur < 10:

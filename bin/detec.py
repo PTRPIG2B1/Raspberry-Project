@@ -10,6 +10,7 @@ import os
 import mail
 import ConfigParser
 import actions
+import log
 
 # Declaration CONSTANTES / variables
 #Lire les valeurs dans les fichiers
@@ -58,6 +59,7 @@ while enFonctionnement == 'True' :
        # print "Zone ("+str(i)+","+str(j)+") : "+str(difference)
     if nbMouvement > 5 :
         print "Mouvement"
+        log.mouvement()
         actions.prendreVideo(10)
         os.system('cp '+IMAGE2_PATH+' '+IMAGEMOUVEMENT_PATH)    
         os.system('raspistill -w '+str(LARGEUR)+' -h '+str(HAUTEUR)+' -t 500 -o '+IMAGE1_PATH)

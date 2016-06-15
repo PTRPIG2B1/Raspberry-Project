@@ -27,6 +27,7 @@ except Exception:
 	exit()
 
 def envoyerEmail(objet, corps, mailtype):
+    '''Cette fonction permet d'envoyer un mail. Il faut spécifier l'objet, le corps de message, et le type (3 strings)'''
     FROM = GMAIL_USER
     TO = GMAIL_TO if type(GMAIL_TO) is list else [GMAIL_TO]
     SUBJECT = objet
@@ -66,6 +67,3 @@ def envoyerMailIP():
 	corps = "Vos IP :\n"
 	corps += getIp()
 	envoyerEmail('Vos IPs de connexion RaspiWatch', corps, 'IP')
-
-
-envoyerMailIP()

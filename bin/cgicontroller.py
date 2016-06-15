@@ -34,7 +34,7 @@ else:
         action = args[i]
         if action == "res":
             actions.setResVideo(args[i+1])
-            actions.setResPhoto(args[i+1])
+            #actions.setResPhoto(args[i+1])
                 
         elif action == "ips":
             actions.setIps((int)(args[i+1]))
@@ -42,5 +42,5 @@ else:
         elif action == "seuil":
             actions.setSeuil((int)(args[i+1]))
             
-        elif action == "luminosite":
+        elif action == "lum":
             actions.setLuminosite((int)(args[i+1]))

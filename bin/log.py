@@ -96,4 +96,11 @@ def erreur(texte):
 	logmsg = "ERREUR : " + texte + actions.getDateName()+"\n"
 	print logmsg
 	log.write(logmsg)
-	log.close()	
+	log.close()
+
+def mouvement():
+    """Permet d'écrire dans le fichier lors de la détection d'un mouvement"""
+    log = open(LOG_PATH, "a")
+    logmsg = "Mouvement détecté "+actions.getDateName()+"\n"
+    log.write(logmsg)
+    log.close()
