@@ -104,3 +104,20 @@ def mouvement():
     logmsg = "Mouvement détecté "+actions.getDateName()+"\n"
     log.write(logmsg)
     log.close()
+
+
+def suppressionPhoto(nom):
+    """Permet de logger une suppression de photo"""
+    log = open(LOG_PATH, "a")
+    logmsg = "Suppression de la photo "+nom+" à "+actions.getDateName()+"\n"
+    log.write(logmsg)
+    log.close()
+
+def suppressionVideo(nom):
+    """Permet de logger une suppression de video"""
+    log = open(LOG_PATH, "a")
+    logmsg = "Suppression de la vidéo "+nom+" à "+actions.getDateName()+"\n"
+    log.write(logmsg)
+    log.close()
+
+	

@@ -28,6 +28,12 @@ elif action == "photo":
 elif action == "video":
     duree = args[3]
     actions.prendreVideo(duree)
+elif action == "delphoto":
+    nom = args[1]
+    actions.supprimerPhoto(nom)
+elif action == "delvideo":
+    nom = args[1]
+    actions.supprimerVideo(nom)
 else:
     for i in range(0,len(args)-1,2):
 

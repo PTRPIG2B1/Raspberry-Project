@@ -30,7 +30,11 @@ def demarrerDetec():
     except Exception:
         mail.envoyerMailErreur("Erreur dans le chemin de configuration dans actions.py")
     cfg.write(open(CONFIG_PATH,'w'))
-    os.system("python "+BIN_PATH+"detec.py &")
+
+    #ret contient la valeur de retour de la commande. On l'utilise pour voir s'il y a eu une erreur
+    ret = os.system("python "+BIN_PATH+"detec.py &")
+    if ret != 0:
+	mail.envoyerMailErreur("Ne peut pas lancer la détection")
     log.demDetect()
     
 def arreterDetec():
@@ -91,6 +95,24 @@ def prendreVideo(secondes):
         log.video()
     except IOError:
         mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
+
+def supprimerPhoto(nom):
+    os.system("rm /home/pi/RaspiWatch/photo/"+nom)
+    try:
+        log.suppressionPhoto(nom)
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+
+
+def supprimerVideo(nom):
+    os.system("rm /home/pi/RaspiWatch/video/"+nom)
+    os.system("rm /home/pi/RaspiWatch/video/miniatures/"+nom)
+    try:
+        log.suppressionVideo(nom)
+    except IOError:
+        mail.envoyerMailErreur("Erreur dans le chemin des logs dans actions.py")
+    
 
 def setResVideo(choix):
     """ Change la résolution vidéo dans la configuration, en fonction des 3 choix disponibles. En cas de mauvaise saisie,
