@@ -6,9 +6,9 @@ LOG_PATH = "/home/pi/RaspiWatch/bin/log.txt"
 
 def log(msg):
     log = open(LOG_PATH, "a")
-	logmsg = msg + " " +actions.getDateName()+"\n"
-	log.write(logmsg)
-	log.close()
+    logmsg = msg + " " +actions.getDateName()+"\n"
+    log.write(logmsg)
+    log.close()
 
 def photo():
 	"""Permet d'écrire dans le fichier log qu'une photo à été prise"""
