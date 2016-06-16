@@ -134,17 +134,16 @@ def configuration():
 		#affmenufps()
 			print 'Saisir les ips :'
 			choixfps = saisir()
-			actions.setIps(choixfps)
+			actions.setIps(int(choixfps))
 			os.system("clear")
 		elif (choixconf == '3'):
 			print "Saisir le seuil en % : "
 			seuil = saisir()
-			actions.setSeuil(seuil)
+			actions.setSeuil(int(seuil))
 		elif (choixconf == '4'):
 			print "Saisir la luminosite en % : "
 			luminosite = saisir()
-			luminosite = int(luminosite)
-			actions.setLuminosite(luminosite)
+			actions.setLuminosite(int(luminosite))
 		elif (choixconf == '0'):
 			print 'Retour au menu principal ...'
 		else :

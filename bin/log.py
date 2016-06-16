@@ -24,7 +24,7 @@ def demDetect():
 
 def arrDetect():
 	"""Permet d'écrire dans le fichier log que la detection à été arrété"""
-	log("Arrêt de la détection")
+	log("Arret de la détection")
 
 def modResPhoto():
 	"""Permet d'écrire dans le fichier log que la resolution photo à été modifié"""

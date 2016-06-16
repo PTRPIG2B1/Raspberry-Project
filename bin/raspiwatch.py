@@ -37,7 +37,7 @@ try:
     luminosite = cfg.get('General', 'luminosite')
     os.system("clear")
 except NoSectionError:
-    mail.envoyerMailErreur("ERREUR : Problème de config.cfg dans raspiwatch.py")
+    mail.envoyerMailErreur("Problème de config.cfg dans raspiwatch.py")
     exit()
 
 #Début du programme 
@@ -56,7 +56,7 @@ while (choix != '0') :
 	elif (choix == '2'):
 		print "Duree de la vidéo ? (en secondes)"
 		secondes = menu.saisir()
-		actions.prendreVideo(secondes)
+		actions.prendreVideo(int(secondes))
 	elif (choix == '3'):
 		detectEnMarche = 'True'
 		actions.demarrerDetec()

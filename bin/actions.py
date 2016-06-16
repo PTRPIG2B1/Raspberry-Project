@@ -28,14 +28,15 @@ def executerCommande(cmd):
     p = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     #Attente de la fin de l'exec, puis récupération des retours (STDOUT et STDERR)
-    p.wait()
-    out, err = p.communicate()
+    rc = 0
+    if "detec.py" not in cmd[1]:
+        out, err = p.communicate()
 
-    rc = p.returncode
+        rc = p.returncode
 
     #Un code de retour différent de 0 signifie qu'il y a eu une erreur
-    if rc != 0:
-        mail.envoyerMailErreur("Code retour : " + str(rc) + " --- STDOUT : " + str(out) + " --- STDERR : " + str(err))
+        if rc != 0:
+            mail.envoyerMailErreur("Code retour : " + str(rc) + " --- STDOUT : " + str(out) + " --- STDERR : " + str(err))
     return rc
 
 def ecrireConfig(section, key, value):
@@ -73,9 +74,7 @@ def arreterDetec():
     """ Arrête la détection de mouvement en changeant la valeur "en marche" dans la config """
     print 'Arret de la detection ...'
     ecrireConfig('Detection', 'enmarche', 'False')
-    rc = executerCommande("python "+BIN_PATH+"detec.py &")
-    if rc == 0:
-        log.arrDetect()
+    log.arrDetect()
 
 
 
